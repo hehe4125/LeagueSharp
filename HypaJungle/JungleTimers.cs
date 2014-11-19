@@ -215,7 +215,7 @@ namespace HypaJungle
                     new JungleMinion("SRU_KrugMini11.1.1")
                 },
                 isBuff = true,
-                isDragBaron = true,
+                isDragBaron = false,
                 team = 1,
                 campId = 11,
                 bonusPrio = 3
