@@ -68,7 +68,26 @@ namespace TalonSharp
                
                     W.Cast(target);
             }
-            castHydra(target);
+            castItemsFull(target);
+        }
+
+        private static void castItemsFull(Obj_AI_Base target)
+        {
+            if (target.Distance(Player) < 500)
+            {
+                sumItems.cast(SummonerItems.ItemIds.Ghostblade);
+                sumItems.castIgnite((Obj_AI_Hero) target);
+            }
+            if (target.Distance(Player) < 500)
+            {
+                sumItems.cast(SummonerItems.ItemIds.BotRK, target);
+                sumItems.cast(SummonerItems.ItemIds.Cutlass, target);
+            }
+            if (target.Distance(Player.ServerPosition) < (400 + target.BoundingRadius - 20))
+            {
+                sumItems.cast(SummonerItems.ItemIds.Tiamat);
+                sumItems.cast(SummonerItems.ItemIds.Hydra);
+            }
         }
 
         public static void doHarassHard(Obj_AI_Hero target)
@@ -93,8 +112,8 @@ namespace TalonSharp
                     W.Cast(po.CastPosition);
                 }
             }
-            
-            castHydra(target);
+
+            castItemsFull(target);
         }
 
         public static void doHarassSmall(Obj_AI_Hero target)
