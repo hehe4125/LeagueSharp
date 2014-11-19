@@ -42,26 +42,38 @@ namespace HypaJungle
                 },
                 new ItemToShop()
                 {
-                    goldReach = 470,
+                    goldReach = 485,
                     itemsMustHave = new List<int>{1039},
-                    itemIds = new List<int>{1080,2003,2003}
+                    itemIds = new List<int>{3106,2003}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 685,
-                    itemsMustHave = new List<int>{1080},
-                    itemIds = new List<int>{1001,1036}
+                    goldReach = 775,
+                    itemsMustHave = new List<int>{3106},
+                    itemIds = new List<int>{1042,1001}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 940,
-                    itemsMustHave = new List<int>{1001,1036},
-                    itemIds = new List<int>{3209}
+                    goldReach = 575,
+                    itemsMustHave = new List<int>{1042,1001},
+                    itemIds = new List<int>{3154}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 800,
+                    itemsMustHave = new List<int>{3154},
+                    itemIds = new List<int>{1053}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 600,
+                    itemsMustHave = new List<int>{1053},
+                    itemIds = new List<int>{3144}
                 },
                 new ItemToShop()
                 {
                     goldReach = 9999999,
-                    itemsMustHave = new List<int>{3209},
+                    itemsMustHave = new List<int>{3144},
                     itemIds = new List<int>{}
                 }
             };

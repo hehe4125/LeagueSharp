@@ -129,6 +129,7 @@ namespace HypaJungle
         public void setFirstLvl()
         {
             sBook.LevelUpSpell(levelUpSeq[0].Slot);
+            buyItems();
         }
 
         public void levelUp(Obj_AI_Base sender, CustomEvents.Unit.OnLevelUpEventArgs args)
