@@ -22,7 +22,7 @@ namespace HypaJungle
             DoSomeHealing
         }
 
-        public static List<String> supportedChamps = new List<string> { "MasterYi", "Udyr", "Warwick", "Shyvana", "LeeSin","Amumu" }; 
+        public static List<String> supportedChamps = new List<string> { "MasterYi", "Udyr", "Warwick", "Shyvana", "LeeSin", "Amumu", "Rengar" }; 
 
 
         public static Obj_AI_Hero player = ObjectManager.Player;
@@ -65,6 +65,10 @@ namespace HypaJungle
                 case "amumu":
                     jungler = new Amumu();
                     Game.PrintChat("Amumu loaded");
+                    break;
+                case "rengar":
+                    jungler = new Rengar();
+                    Game.PrintChat("Rengar loaded");
                     break;
             }
 

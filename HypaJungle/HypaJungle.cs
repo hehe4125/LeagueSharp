@@ -60,10 +60,12 @@ namespace HypaJungle
 
                 Config = new Menu("HypeJungle", "hype", true);
 
-                Config.AddSubMenu(new Menu("Jungler Config", "junglerCon"));
-                Config.SubMenu("junglerCon").AddItem(new MenuItem("blabla", "Relead to work!")).SetValue(true);
-                Config.SubMenu("junglerCon").AddItem(new MenuItem("useDefConf", "Use Default Config")).SetValue(true);
-                Config.SubMenu("junglerCon").AddItem(new MenuItem("fileConfigHypa", "")).SetValue(ConfigLoader.getChampionConfigs(player.ChampionName));
+                setChampMenu(player.ChampionName);
+
+              //  Config.AddSubMenu(new Menu("Jungler Config", "junglerCon"));
+               // Config.SubMenu("junglerCon").AddItem(new MenuItem("blabla", "Relead to work!")).SetValue(true);
+              //  Config.SubMenu("junglerCon").AddItem(new MenuItem("useDefConf", "Use Default Config")).SetValue(true);
+              //  Config.SubMenu("junglerCon").AddItem(new MenuItem("fileConfigHypa", "")).SetValue(ConfigLoader.getChampionConfigs(player.ChampionName));
                 Config.AddSubMenu(new Menu("Jungler", "jungler"));
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoLVL", "Auto Level")).SetValue(true);
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoBuy", "Auto Buy")).SetValue(true);
@@ -86,10 +88,11 @@ namespace HypaJungle
                 JungleClearer.setUpJCleaner();
 
                 //Load custom stuff
-                if (!Config.Item("useDefConf").GetValue<bool>())
+                if (!Config.Item("useDefConf_"+player.ChampionName).GetValue<bool>())
                     ConfigLoader.loadNewConfigHypa(
-                       Config.Item("fileConfigHypa").GetValue<StringList>().SList[
-                           Config.Item("fileConfigHypa").GetValue<StringList>().SelectedIndex]);
+                       Config.Item("fileConfigHypa2_" + player.ChampionName).GetValue<StringList>().SList[
+                           Config.Item("fileConfigHypa2_"+player.ChampionName).GetValue<StringList>().SelectedIndex]);
+
                 JungleClearer.jungler.setFirstLvl();
 
 
@@ -99,6 +102,16 @@ namespace HypaJungle
                 Game.PrintChat("Oops. Something went wrong with HypaJungle");
                 Console.WriteLine(ex);
             }
+
+        }
+
+        public static void setChampMenu(string champ)
+        {
+
+            Config.AddSubMenu(new Menu(champ+" Config", "junglerCon" + champ));
+            Config.SubMenu("junglerCon" + champ).AddItem(new MenuItem("blabla_" + champ, "Relead to work!")).SetValue(true);
+            Config.SubMenu("junglerCon" + champ).AddItem(new MenuItem("useDefConf_" + champ, "Use Default Config")).SetValue(true);
+            Config.SubMenu("junglerCon" + champ).AddItem(new MenuItem("fileConfigHypa2_" + champ, "")).SetValue(ConfigLoader.getChampionConfigs(player.ChampionName));
 
         }
 

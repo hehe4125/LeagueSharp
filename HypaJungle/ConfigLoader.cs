@@ -18,9 +18,9 @@ namespace HypaJungle
         {
             string[] files = Directory.GetFiles(path + champName + "\\", "*.hypa", SearchOption.AllDirectories);
 
-            string[] fileNames = new string[files.Count()];
-
-            for (int i = 0; i < files.Count(); i++)
+            string[] fileNames = new string[files.Count()+1];
+            fileNames[0] = "default";
+            for (int i = 1; i < files.Count()+1; i++)
             {
                 fileNames[i] = Path.GetFileName(files[i]);
             }
@@ -44,6 +44,9 @@ namespace HypaJungle
         {
             try
             {
+                if(configName == "default")
+                    return;
+
                 List<Spell> lvlSeq = new List<Spell>();
                 List<Jungler.ItemToShop> buyThings = new List<Jungler.ItemToShop>();
 
