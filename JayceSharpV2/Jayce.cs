@@ -603,7 +603,7 @@ namespace JayceSharpV2
 
         public static void knockAway(Obj_AI_Base target)
         {
-            if (!targetInRange(target, 270) || hamECDRem != 0)
+            if (!targetInRange(target, 270) || hamECDRem != 0 || E1.Level == 0)
                 return;
 
             if (!isHammer && R2.IsReady())
