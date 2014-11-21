@@ -22,7 +22,7 @@ namespace HypaJungle
             fileNames[0] = "default";
             for (int i = 1; i < files.Count()+1; i++)
             {
-                fileNames[i] = Path.GetFileName(files[i]);
+                fileNames[i] = Path.GetFileName(files[i-1]);
             }
             Console.WriteLine(files.Count());
             StringList sl = new StringList(fileNames);
