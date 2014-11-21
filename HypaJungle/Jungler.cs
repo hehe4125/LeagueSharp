@@ -104,7 +104,7 @@ namespace HypaJungle
             if (HypaJungle.Config.Item("smiteToKill").GetValue<bool>())
             {
                 if (player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite)>=minion.Health)
-                    if (((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff).Any()) && minion.MaxHealth >= 800) ||
+                    if (((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff && cp.State == JungleCampState.Alive).Any()) && minion.MaxHealth >= 800) ||
                         (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
                     {
                         doSmite(minion);
