@@ -19,7 +19,8 @@ namespace HypaJungle
             SearchingBestCamp,
             GoingToShop,
             DoingDragon,
-            DoSomeHealing
+            RecallForHeal,
+            ThinkAfterFinishCamp
         }
 
         public static List<String> supportedChamps = new List<string> { "MasterYi", "Udyr", "Warwick", "Shyvana", "LeeSin", "Amumu", "Rengar" }; 
@@ -82,7 +83,22 @@ namespace HypaJungle
             {
                 focusedCamp = getBestCampToGo();
                 if (focusedCamp != null)
-                    jcState = JungleCleanState.RunningToCamp;
+                {
+                    //puss out or kill?
+                    if (focusedCamp.willKillMe  || (player.Health/player.MaxHealth <0.5f && focusedCamp.timeToCamp>12))
+                    {
+                        Console.WriteLine("gona diee");
+                        jcState = JungleCleanState.RecallForHeal;
+                    }
+                    else
+                    {
+                        jcState = JungleCleanState.RunningToCamp;
+                    }
+                }
+                else
+                {
+                    jcState = JungleCleanState.RecallForHeal;
+                }
             }
 
             if (jcState == JungleCleanState.RunningToCamp)
@@ -121,13 +137,46 @@ namespace HypaJungle
                     jcState = JungleCleanState.SearchingBestCamp;
             }
 
+            if (jcState == JungleCleanState.ThinkAfterFinishCamp)
+            {
+                jcState = JungleCleanState.SearchingBestCamp;
+
+            }
+
+            if (jcState == JungleCleanState.RecallForHeal)
+            {
+                if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
+                {
+                    jungler.recall.Cast();
+                    recalCasted = true;
+                }
+
+                if (jungler.inSpwan())
+                {
+                    if (HypaJungle.Config.Item("autoBuy").GetValue<bool>())
+                    {
+                        jcState = JungleCleanState.GoingToShop;
+                    }
+                    else
+                    {
+                        if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.9f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.9f))
+                            jcState = JungleCleanState.SearchingBestCamp;
+                    }
+                }
+
+
+            }
+
             if (jcState == JungleCleanState.GoingToShop)
             {
                 if (!HypaJungle.Config.Item("autoBuy").GetValue<bool>())
                     jcState = JungleCleanState.SearchingBestCamp;
 
                 if (jungler.inSpwan())
+                {
+                    jungler.getItemPassiveBoostDps();
                     jungler.setupSmite();
+                }
 
                 if (jungler.inSpwan() && player.IsChanneling)
                 {
@@ -137,7 +186,6 @@ namespace HypaJungle
 
                 if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach )
                 {
-                    Console.WriteLine(player.GoldCurrent + "   " + jungler.nextItem.goldReach);
                     if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
                     {
                         jungler.recall.Cast();
@@ -154,7 +202,7 @@ namespace HypaJungle
 
                 }
             }
-            else
+            else if (jcState != JungleCleanState.RecallForHeal)
             {
                 recalCasted = false;
             }
@@ -209,16 +257,40 @@ namespace HypaJungle
 
         public static void attackCampMinions()
         {
-            List<JungleMinion> campMinions = focusedCamp.Minions.Where(min => min.Unit != null && !min.Dead).OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).ToList();
-            /*if (campMinions.Count() ==0)
-            {
-                getJungleMinionsManualy();
-            }
-            else//do all attacking
-            {*/
-                jungler.startAttack((Obj_AI_Minion)campMinions.FirstOrDefault().Unit);
-            //}
+            if (focusedCamp == null || focusedCamp.Minions == null)
+                return;
 
+            getJungleMinionsManualy();
+            if (!jungler.gotOverTime || !HypaJungle.Config.Item("getOverTime").GetValue<KeyBind>().Active)
+            {
+                    JungleMinion campMinions =
+                   focusedCamp.Minions.Where(min => min != null && min.Unit != null && !min.Unit.IsDead)
+                       .OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).FirstOrDefault();
+                    jungler.startAttack((Obj_AI_Minion)campMinions.Unit, false);
+                
+               
+            }
+            else
+            {
+                JungleMinion campMinions =
+                    focusedCamp.Minions.Where(min => min.Unit != null && !min.Dead)
+                    .OrderBy(min => minHasOvertime(((Obj_AI_Minion)min.Unit))).ThenByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth)
+                        .FirstOrDefault();
+                       // .OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).First();
+                jungler.startAttack((Obj_AI_Minion)campMinions.Unit,false);
+
+            }
+
+        }
+
+        public static int minHasOvertime(Obj_AI_Base min)
+        {
+            foreach (var buf in min.Buffs)
+            {
+                if (buf.Name == "itemmonsterburn")
+                    return 5;
+            }
+            return 0;
         }
 
         public static void getJungleMinionsManualy()
@@ -253,7 +325,7 @@ namespace HypaJungle
 
         public static JungleCamp getBestCampToGo()
         {
-            float minPriority = getPriorityNumber(HypaJungle.jTimer._jungleCamps.First());
+            int minPriority = getPriorityNumber(HypaJungle.jTimer._jungleCamps.First());
             JungleCamp bestCamp = null;
             foreach (var jungleCamp in HypaJungle.jTimer._jungleCamps)
             {
@@ -273,7 +345,7 @@ namespace HypaJungle
         public static int getPriorityNumber(JungleCamp camp)
         {
             if (camp.isDragBaron)
-                return 99999;
+                return 999;
 
             if (((camp.team == 0 && HypaJungle.player.Team == GameObjectTeam.Chaos)
                 || (camp.team == 1 && HypaJungle.player.Team == GameObjectTeam.Order)) && !HypaJungle.Config.Item("enemyJung").GetValue<bool>())
@@ -284,8 +356,6 @@ namespace HypaJungle
 
             int priority = 0;
 
-
-
             var distTillCamp = getPathLenght(HypaJungle.player.GetPath(camp.Position));
             var timeToCamp = distTillCamp / HypaJungle.player.MoveSpeed;
             var spawnTime = (Game.Time < camp.SpawnTime.TotalSeconds) ? camp.SpawnTime.TotalSeconds : camp.RespawnTimer.TotalSeconds;
@@ -293,12 +363,22 @@ namespace HypaJungle
             float revOn = camp.ClearTick + (float)spawnTime;
             float timeTillSpawn = (camp.State == JungleCampState.Dead)?((revOn - Game.Time > 0) ? (revOn - Game.Time) : 0):0;
 
-            if (!jungler.canKill(camp))
+            camp.willKillMe = false;
+            if (!jungler.canKill(camp, timeToCamp) && HypaJungle.Config.Item("checkKillability").GetValue<KeyBind>().Active)
+            {
                 priority += 999;
+                camp.willKillMe = true;
+            }
             priority -= camp.bonusPrio;
             priority += (int)timeToCamp;
             priority += (int) timeTillSpawn;
             priority -= (camp.isBuff) ? jungler.buffPriority : 0;
+            //priority -= (int)(timeTillSpawn - timeToCamp);
+            //alive on come is better ;)
+
+            camp.priority = priority;
+            camp.timeToCamp = timeToCamp;
+
             //if(!camp.isBuff)
               //  priority -= (isInBuffWay(camp)) ? 10 : 0;
 

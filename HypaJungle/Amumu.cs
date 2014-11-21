@@ -113,7 +113,7 @@ namespace HypaJungle
 
         }
 
-        public override void attackMinion(Obj_AI_Minion minion)
+        public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
             player.IssueOrder(GameObjectOrder.AttackUnit, minion);
             UseQ(minion);
@@ -131,6 +131,11 @@ namespace HypaJungle
                     Q.Cast(camp.Position);
                 }
             }
+        }
+
+        public override void doAfterAttack(Obj_AI_Base minion)
+        {
+            
         }
 
         public override void doWhileRunningIdlin()
@@ -162,6 +167,9 @@ namespace HypaJungle
             return true;
         }
 
-
+        public override float canHeal(float inTime, float killtime)
+        {
+            return player.HPRegenRate*inTime;
+        }
     }
 }

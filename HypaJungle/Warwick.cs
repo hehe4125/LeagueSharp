@@ -35,43 +35,31 @@ namespace HypaJungle
                 {
                     goldReach = 475,
                     itemsMustHave = new List<int>{},
-                    itemIds = new List<int>{1039,2003}
-                },
-                new ItemToShop()
-                {
-                    goldReach = 450,
-                    itemsMustHave = new List<int>{1039},
-                    itemIds = new List<int>{3106}
+                    itemIds = new List<int>{1039,2003,2003,2003}
                 },
                 new ItemToShop()
                 {
                     goldReach = 700,
-                    itemsMustHave = new List<int>{3106},
-                    itemIds = new List<int>{1080}
+                    itemsMustHave = new List<int>{1039},
+                    itemIds = new List<int>{3715,1001}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 350,
-                    itemsMustHave = new List<int>{1080},
-                    itemIds = new List<int>{1001}
+                    goldReach = 900,
+                    itemsMustHave = new List<int>{3715,1001},
+                    itemIds = new List<int>{1042,1042}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 1025,
-                    itemsMustHave = new List<int>{1001},
-                    itemIds = new List<int>{3154}
-                },
-                new ItemToShop()
-                {
-                    goldReach = 800,
-                    itemsMustHave = new List<int>{3154},
-                    itemIds = new List<int>{1053}
+                    goldReach = 700,
+                    itemsMustHave = new List<int>{1042,1042},
+                    itemIds = new List<int>{3718}
                 },
                 new ItemToShop()
                 {
                     goldReach = 600,
-                    itemsMustHave = new List<int>{1053},
-                    itemIds = new List<int>{3144}
+                    itemsMustHave = new List<int>{1042,1042,3715},
+                    itemIds = new List<int>{3718}
                 },
                 new ItemToShop()
                 {
@@ -111,7 +99,7 @@ namespace HypaJungle
 
         }
 
-        public override void attackMinion(Obj_AI_Minion minion)
+        public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
             player.IssueOrder(GameObjectOrder.AttackUnit, minion);
             UseQ(minion);
@@ -125,6 +113,11 @@ namespace HypaJungle
 
         }
 
+        public override void doAfterAttack(Obj_AI_Base minion)
+        {
+            
+        }
+
         public override void doWhileRunningIdlin()
         {
 
@@ -134,6 +127,7 @@ namespace HypaJungle
         {
             float dps = 0;
             dps += (float)player.GetAutoAttackDamage(minion) * player.AttackSpeedMod;
+            dps += 30;
             dpsFix = dps;
             return dps;
         }
@@ -141,6 +135,17 @@ namespace HypaJungle
         public override bool canMove()
         {
             return true;
+        }
+
+        public override float canHeal(float inTime,float killtime)
+        {
+            float heal = killtime*player.AttackSpeedMod*(2.5f+0.5f*player.Level)*3;
+
+            if (Q.Level != 0)
+                heal += 25 + 50*Q.Level;
+
+            return player.HPRegenRate * inTime + heal;
+
         }
     }
 }

@@ -63,6 +63,7 @@
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="HypaJungle.cs" />
     <Compile Include="JungleClearer.cs" />
+    <Compile Include="JungleOrbwalker.cs" />
     <Compile Include="Jungler.cs" />
     <Compile Include="JungleTimerOld.cs" />
     <Compile Include="JungleTimers.cs" />

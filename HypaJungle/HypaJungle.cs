@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,9 +72,13 @@ namespace HypaJungle
                 Config.SubMenu("jungler").AddItem(new MenuItem("skipSpawn", "Debug skip")).SetValue(new KeyBind('G', KeyBindType.Press));
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoLVL", "Auto Level")).SetValue(true);
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoBuy", "Auto Buy")).SetValue(true);
-                Config.SubMenu("jungler").AddItem(new MenuItem("enemyJung", "do Enemy jungle")).SetValue(false);
-                Config.SubMenu("jungler").AddItem(new MenuItem("doCrabs", "do Crabs")).SetValue(false);
-                Config.SubMenu("jungler").AddItem(new MenuItem("smiteToKill", "smite to kill")).SetValue(false);
+
+                Config.AddSubMenu(new Menu("Jungle CLeaning", "jungleCleaning"));
+                Config.SubMenu("jungleCleaning").AddItem(new MenuItem("smiteToKill", "smite to kill")).SetValue(false);
+                Config.SubMenu("jungleCleaning").AddItem(new MenuItem("enemyJung", "do Enemy jungle")).SetValue(false);
+                Config.SubMenu("jungleCleaning").AddItem(new MenuItem("doCrabs", "do Crabs")).SetValue(false);
+                Config.SubMenu("jungleCleaning").AddItem(new MenuItem("getOverTime", "Get everyone OverTimeDmg")).SetValue(false);
+                Config.SubMenu("jungleCleaning").AddItem(new MenuItem("checkKillability", "Check if can kill camps")).SetValue(false);
 
                 Config.AddSubMenu(new Menu("Drawings", "draw"));
                 Config.SubMenu("draw").AddItem(new MenuItem("drawStuff", "Draw??")).SetValue(false);
@@ -140,6 +145,26 @@ namespace HypaJungle
                 jTimer.enableCamp(campID);
 
             }
+
+            //AfterAttack
+            if (args.PacketData[0] == 0x65 && Config.Item("doJungle").GetValue<KeyBind>().Active)
+            {
+                GamePacket gp = new GamePacket(args.PacketData);
+                gp.Position = 1;
+                Packet.S2C.Damage.Struct dmg = Packet.S2C.Damage.Decoded(args.PacketData);
+
+                int targetID = gp.ReadInteger();
+                int dType = (int)gp.ReadByte();
+                int Unknown = gp.ReadShort();
+                float DamageAmount = gp.ReadFloat();
+                int TargetNetworkIdCopy = gp.ReadInteger();
+                int SourceNetworkId = gp.ReadInteger();
+                if (player.NetworkId != dmg.SourceNetworkId)
+                    return;
+                Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
+                JungleClearer.jungler.doAfterAttack(targ);
+
+            }
         }
 
         private static void OnLevelUp(Obj_AI_Base sender, CustomEvents.Unit.OnLevelUpEventArgs args)
@@ -162,16 +187,28 @@ namespace HypaJungle
 
             if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
             {
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(player))
+                {
+                    string name = descriptor.Name;
+                    object value = descriptor.GetValue(player);
+                    if (name.Contains("cent"))
+                        Console.WriteLine("{0}={1}", name, value);
+                }
+
+                foreach (var item in player.InventoryItems)
+                {
+                    Console.WriteLine(item.Id+" : "+item.Name);
+                }
+
                /* foreach (SpellDataInst spell in player.Spellbook.Spells)
                 {
                     Console.WriteLine(spell.Name.ToLower());
-                }*/
-                Console.WriteLine(player.GetSpellSlot("summonersmite"));
+                }
 
                 foreach (SpellDataInst spell in player.SummonerSpellbook.Spells)
                 {
                     Console.WriteLine(spell.Name.ToLower()+"  "+spell.Slot);
-                }
+                }*/
                
 
             }
@@ -200,7 +237,9 @@ namespace HypaJungle
                 return;
 
             Drawing.DrawText(200, 200, Color.Green, JungleClearer.jcState.ToString() +" : "+player.Position.X+ " : "+player.Position.Y+ " : "
-                +player.Position.Z+ " : ");
+                + player.Position.Z + " : ");
+            Drawing.DrawText(200, 220, Color.Green, "DoOver: " + JungleClearer.jungler.overTimeName+" : "+JungleClearer.jungler.gotOverTime);
+
             if (JungleClearer.jungler.nextItem != null)
                 Drawing.DrawText(200, 250, Color.Green, "Gold: "+JungleClearer.jungler.nextItem.goldReach);
             if (JungleClearer.focusedCamp != null)
@@ -208,8 +247,17 @@ namespace HypaJungle
 
             foreach (var min in MinionManager.GetMinions(HypaJungle.player.Position, 800, MinionTypes.All,MinionTeam.Neutral))
             {
+                if (JungleClearer.jungler.overTimeName != "" && JungleClearer.minHasOvertime(min)!=0)
+                    Drawing.DrawCircle(min.Position,100,Color.Brown);
+
                 var pScreen = Drawing.WorldToScreen(min.Position);
                 Drawing.DrawText(pScreen.X, pScreen.Y, Color.Red, min.Name+" : "+min.MaxHealth);
+                var bufCount = 10;
+                foreach (var buff in min.Buffs)
+                {
+                    Drawing.DrawText(pScreen.X, pScreen.Y + bufCount, Color.Red, buff.Name);
+                    bufCount += 10;
+                }
             }
 
 
@@ -234,7 +282,7 @@ namespace HypaJungle
                     var pScreen = Drawing.WorldToScreen(camp.Position);
 
                     Drawing.DrawText(pScreen.X, pScreen.Y, Color.Red,
-                        camp.State.ToString() + " : "+camp.team+ " : " + JungleClearer.getPriorityNumber(camp));
+                        camp.State.ToString() + " : "+camp.team+ " : " + camp.priority);
 
                     //Order = 0 chaos =1
                 }

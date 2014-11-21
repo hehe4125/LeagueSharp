@@ -15,7 +15,7 @@ namespace HypaJungle
             setUpSpells();
             setUpItems();
             levelUpSeq = new Spell[] { Q, W, Q, E, Q,R,Q,E,Q,E,R,W,E,W,W,R,W,W};
-            buffPriority = 5;
+            buffPriority = 3;
         }
 
         public override void setUpSpells()
@@ -32,47 +32,35 @@ namespace HypaJungle
             #region itemsToBuyList
             buyThings = new List<ItemToShop>
             {
-                 new ItemToShop()
+                new ItemToShop()
                 {
                     goldReach = 475,
                     itemsMustHave = new List<int>{},
-                    itemIds = new List<int>{1039,2003,2003}
-                },
-                new ItemToShop()
-                {
-                    goldReach = 450,
-                    itemsMustHave = new List<int>{1039},
-                    itemIds = new List<int>{3106}
+                    itemIds = new List<int>{1039,2003,2003,2003}
                 },
                 new ItemToShop()
                 {
                     goldReach = 700,
-                    itemsMustHave = new List<int>{3106},
-                    itemIds = new List<int>{1080}
+                    itemsMustHave = new List<int>{1039},
+                    itemIds = new List<int>{3715,1001}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 350,
-                    itemsMustHave = new List<int>{1080},
-                    itemIds = new List<int>{1001}
+                    goldReach = 900,
+                    itemsMustHave = new List<int>{3715,1001},
+                    itemIds = new List<int>{1042,1042}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 1025,
-                    itemsMustHave = new List<int>{1001},
-                    itemIds = new List<int>{3154}
-                },
-                new ItemToShop()
-                {
-                    goldReach = 800,
-                    itemsMustHave = new List<int>{3154},
-                    itemIds = new List<int>{1053}
+                    goldReach = 700,
+                    itemsMustHave = new List<int>{1042,1042},
+                    itemIds = new List<int>{3718}
                 },
                 new ItemToShop()
                 {
                     goldReach = 600,
-                    itemsMustHave = new List<int>{1053},
-                    itemIds = new List<int>{3144}
+                    itemsMustHave = new List<int>{1042,1042,3715},
+                    itemIds = new List<int>{3718}
                 },
                 new ItemToShop()
                 {
@@ -110,7 +98,7 @@ namespace HypaJungle
                 R.Cast();
         }
 
-        public override void attackMinion(Obj_AI_Minion minion)
+        public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
 
             UseQ(minion);
@@ -125,6 +113,11 @@ namespace HypaJungle
 
         }
 
+        public override void doAfterAttack(Obj_AI_Base minion)
+        {
+            
+        }
+
         public override void doWhileRunningIdlin()
         {
             if (player.MaxMana*0.5f < player.Mana && E.IsReady() && player.IsMoving)
@@ -135,6 +128,7 @@ namespace HypaJungle
         {
             float dps = 0;
             dps += Q.GetDamage(minion) / Qdata.Cooldown;
+            dps += R.GetDamage(minion) / Rdata.Cooldown;
             dps += (float)player.GetAutoAttackDamage(minion) * player.AttackSpeedMod;
             dpsFix = dps;
             return (dps==0)?999:dps;
@@ -143,6 +137,11 @@ namespace HypaJungle
         public override bool canMove()
         {
             return true;
+        }
+
+        public override float canHeal(float inTime, float killtime)
+        {
+            return player.HPRegenRate * inTime;
         }
     }
 }

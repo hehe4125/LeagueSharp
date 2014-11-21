@@ -56,6 +56,11 @@ namespace HypaJungle
         public int health = 0;
         public byte campId;
         public int bonusPrio = 0;
+
+        public float timeToCamp = 0;
+        public int priority = 0;
+        public bool willKillMe = false;
+
     }
 
     internal class JungleMinion
@@ -117,15 +122,15 @@ namespace HypaJungle
                 isBuff = false,
                 isDragBaron = false,
                 team = 0,
-                dps = (int)(75*0.64f),
-                health = 1400,
+                dps = (int)(90*0.64f),
+                health = 1600,
                 campId = 13,
                 bonusPrio = 3
             },
             new JungleCamp //Blue
             {
                 SpawnTime = TimeSpan.FromSeconds(115),
-                RespawnTimer = TimeSpan.FromSeconds(300),
+                RespawnTimer = TimeSpan.FromSeconds(310),
                 Position = new Vector3(3820.156f, 7920.175f, 52.21874f),
                 Minions = new List<JungleMinion>
                 {
@@ -135,6 +140,8 @@ namespace HypaJungle
                 },
                 isBuff = true,
                 isDragBaron = false,
+                dps = (int)(80*0.64f),
+                health = 2000,
                 team = 0,
                 campId = 1
             },
@@ -151,6 +158,8 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
+                dps = (int)(73*0.49+24*0.64),
+                health = 1320,
                 team = 0,
                 campId = 2
             },
@@ -168,6 +177,8 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
+                dps = (int)(70*0.64f),
+                health = 1200,
                 team = 0,
                 campId = 3
             },
@@ -184,6 +195,8 @@ namespace HypaJungle
                 },
                 isBuff = true,
                 isDragBaron = false,
+                dps = (int)(104*0.60f),
+                health = 1800,
                 team = 0,
                 campId = 4
             },
@@ -199,6 +212,8 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
+                dps = (int)(100*0.60f),
+                health = 1440,
                 team = 0,
                 campId = 5,
                 bonusPrio = 3
@@ -216,6 +231,8 @@ namespace HypaJungle
                 },
                 isBuff = true,
                 isDragBaron = false,
+                dps = (int)(100*0.60f),
+                health = 1440,
                 team = 1,
                 campId = 11,
                 bonusPrio = 3
@@ -233,6 +250,8 @@ namespace HypaJungle
                 },
                 isBuff = true,
                 isDragBaron = false,
+                dps = (int)(104*0.60f),
+                health = 1800,
                 team = 1,
                 campId = 10
             },
@@ -250,6 +269,8 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
+                dps = (int)(70*0.64f),
+                health = 1200,
                 team = 1,
                 campId = 9
             },
@@ -266,13 +287,15 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
+                dps = (int)(73*0.49+24*0.64),
+                health = 1320,
                 team = 1,
                 campId = 8
             },
             new JungleCamp //Blue
             {
                 SpawnTime = TimeSpan.FromSeconds(115),
-                RespawnTimer = TimeSpan.FromSeconds(300),
+                RespawnTimer = TimeSpan.FromSeconds(310),
                 Position = new Vector3(10938.95f, 7000.918f, 51.8691f),
                 Minions = new List<JungleMinion>
                 {
@@ -282,6 +305,8 @@ namespace HypaJungle
                 },
                 isBuff = true,
                 isDragBaron = false,
+                dps = (int)(80*0.64f),
+                health = 2000,
                 team = 1,
                 campId = 7
 
@@ -298,8 +323,8 @@ namespace HypaJungle
                 isBuff = false,
                 isDragBaron = false,
                 team = 1,
-                dps = (int)(75*0.64f),
-                health = 1400,
+                dps = (int)(90*0.64f),
+                health = 1600,
                 campId = 14,
                 bonusPrio = 3
             },
