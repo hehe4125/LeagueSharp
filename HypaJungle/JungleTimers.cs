@@ -76,7 +76,7 @@ namespace HypaJungle
         {
             new JungleCamp //Baron
             {
-                SpawnTime = TimeSpan.FromSeconds(900),
+                SpawnTime = TimeSpan.FromSeconds(1200),
                 RespawnTimer = TimeSpan.FromSeconds(420),
                 Position = new Vector3(4549.126f, 10126.66f, -63.11666f),
                 Minions = new List<JungleMinion>
@@ -97,7 +97,7 @@ namespace HypaJungle
                 Position = new Vector3(9606.835f, 4210.494f, -60.30991f),
                 Minions = new List<JungleMinion>
                 {
-                    new JungleMinion("Dragon6.1.1")
+                    new JungleMinion("SRU_Dragon6.1.1")
                 },
                 isBuff = false,
                 isDragBaron = true,
@@ -108,7 +108,7 @@ namespace HypaJungle
             new JungleCamp //Wight
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(2172.131f, 8450.272f, 51.92376f),
                 Minions = new List<JungleMinion>
                 {
@@ -141,7 +141,7 @@ namespace HypaJungle
             new JungleCamp //Wolfs
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(3842.77f, 6462.637f, 52.60973f),
                 Minions = new List<JungleMinion>
                 {
@@ -157,7 +157,7 @@ namespace HypaJungle
             new JungleCamp //Wraith
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6926.0f, 5400.0f, 51.0f),
                 Minions = new List<JungleMinion>
                 {
@@ -190,7 +190,7 @@ namespace HypaJungle
             new JungleCamp //Golems
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(8404.148f, 2726.269f, 51.2764f),
                 Minions = new List<JungleMinion>
                 {
@@ -207,7 +207,7 @@ namespace HypaJungle
             new JungleCamp //Golems
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6424.0f, 12156.0f, 56.62551f),
                 Minions = new List<JungleMinion>
                 {
@@ -239,7 +239,7 @@ namespace HypaJungle
             new JungleCamp //Wraith
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(7970.319f, 9410.513f, 52.50048f),
                 Minions = new List<JungleMinion>
                 {
@@ -256,7 +256,7 @@ namespace HypaJungle
             new JungleCamp //Wolfs
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(10972.0f, 8306.0f, 62.5235f),
                 Minions = new List<JungleMinion>
                 {
@@ -289,8 +289,8 @@ namespace HypaJungle
             new JungleCamp //Wight
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
-                Position = new Vector3(12622.0f, 6468.0f, 51.84151f),
+                RespawnTimer = TimeSpan.FromSeconds(100),
+                Position = new Vector3(12770.0f, 6468.0f, 51.84151f),
                 Minions = new List<JungleMinion>
                 {
                     new JungleMinion("SRU_Gromp14.1.1")
@@ -301,6 +301,36 @@ namespace HypaJungle
                 dps = (int)(75*0.64f),
                 health = 1400,
                 campId = 14,
+                bonusPrio = 3
+            },
+             new JungleCamp //Crab
+            {
+                SpawnTime = TimeSpan.FromSeconds(150),
+                RespawnTimer = TimeSpan.FromSeconds(180),
+                Position = new Vector3(10218.0f, 5296.0f, -62.84151f),
+                Minions = new List<JungleMinion>
+                {
+                    new JungleMinion("Sru_Crab15.1.1")
+                },
+                isBuff = false,
+                isDragBaron = false,
+                team = 3,
+                campId = 15,
+                bonusPrio = 3
+            },
+             new JungleCamp //Crab
+            {
+                SpawnTime = TimeSpan.FromSeconds(150),
+                RespawnTimer = TimeSpan.FromSeconds(180),
+                Position = new Vector3(5118.0f, 9200.0f, -71.84151f),
+                Minions = new List<JungleMinion>
+                {
+                    new JungleMinion("Sru_Crab16.1.1")
+                },
+                isBuff = false,
+                isDragBaron = false,
+                team = 3,
+                campId = 16,
                 bonusPrio = 3
             }
         };
@@ -427,8 +457,10 @@ namespace HypaJungle
                 {
                     if (camp.campId == JungleClearer.focusedCamp.campId)
                     {
-
-                        JungleClearer.jcState = JungleClearer.JungleCleanState.GoingToShop;
+                        if (HypaJungle.Config.Item("autoBuy").GetValue<bool>())
+                            JungleClearer.jcState = JungleClearer.JungleCleanState.GoingToShop;
+                        else
+                            JungleClearer.jcState = JungleClearer.JungleCleanState.SearchingBestCamp;
                     }
                 }
             }

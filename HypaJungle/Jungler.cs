@@ -29,7 +29,7 @@ namespace HypaJungle
 
         public static bool canBuyItems = true;
 
-        private SpellSlot smite = player.GetSpellSlot("SummonerSmite");
+        private SpellSlot smite = player.GetSpellSlot("summonersmite");
 
         
 
@@ -76,14 +76,23 @@ namespace HypaJungle
 
         public Jungler()
         {
-
+            setupSmite();
         }
 
-        public void castSmite(Obj_AI_Base target)
+        public void setupSmite()
         {
-           // smite = player.GetSpellSlot("SummonerSmite");
+            if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
+                smite = SpellSlot.Summoner1;
+            else if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
+                smite =SpellSlot.Summoner2;
+        }
+
+        private void doSmite(Obj_AI_Base target)
+        {
             if (player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+            {
                 player.SummonerSpellbook.CastSpell(smite, target);
+            }
         }
 
         public void startAttack(Obj_AI_Minion minion)
@@ -92,9 +101,22 @@ namespace HypaJungle
 
             if (minion == null || !minion.IsValid || !minion.IsVisible)
                 return;
+            if (HypaJungle.Config.Item("smiteToKill").GetValue<bool>())
+            {
+                if (player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite)>=minion.Health)
+                    if (((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff).Any()) && minion.MaxHealth >= 800) ||
+                        (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
+                    {
+                        doSmite(minion);
+                    }
+            }
+            else
+            {
+                if (minion.Health / getDPS(minion) > ((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff).Any()) ? 7 : 4) || (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
+                    doSmite(minion);
+            }
+           
 
-            if (minion.Health / getDPS(minion) > ((JungleClearer.getBestBuffCamp() == null) ? 7 : 4) || (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
-                castSmite(minion);
 
             attackMinion(minion);
         }

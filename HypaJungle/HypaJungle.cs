@@ -67,13 +67,20 @@ namespace HypaJungle
               //  Config.SubMenu("junglerCon").AddItem(new MenuItem("useDefConf", "Use Default Config")).SetValue(true);
               //  Config.SubMenu("junglerCon").AddItem(new MenuItem("fileConfigHypa", "")).SetValue(ConfigLoader.getChampionConfigs(player.ChampionName));
                 Config.AddSubMenu(new Menu("Jungler", "jungler"));
+                Config.SubMenu("jungler").AddItem(new MenuItem("doJungle", "Do jungle")).SetValue(new KeyBind('J', KeyBindType.Toggle));
+                Config.SubMenu("jungler").AddItem(new MenuItem("skipSpawn", "Debug skip")).SetValue(new KeyBind('G', KeyBindType.Press));
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoLVL", "Auto Level")).SetValue(true);
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoBuy", "Auto Buy")).SetValue(true);
+                Config.SubMenu("jungler").AddItem(new MenuItem("enemyJung", "do Enemy jungle")).SetValue(false);
+                Config.SubMenu("jungler").AddItem(new MenuItem("doCrabs", "do Crabs")).SetValue(false);
+                Config.SubMenu("jungler").AddItem(new MenuItem("smiteToKill", "smite to kill")).SetValue(false);
+
+                Config.AddSubMenu(new Menu("Drawings", "draw"));
+                Config.SubMenu("draw").AddItem(new MenuItem("drawStuff", "Draw??")).SetValue(false);
+             
 
                 Config.AddSubMenu(new Menu("Debug stuff", "debug"));
-                Config.SubMenu("debug").AddItem(new MenuItem("doJungle", "Do jungle")).SetValue(new KeyBind('J', KeyBindType.Toggle));
-                Config.SubMenu("debug").AddItem(new MenuItem("debugOn", "Debug stuff")).SetValue(new KeyBind('A', KeyBindType.Press));
-                Config.SubMenu("debug").AddItem(new MenuItem("skipSpawn", "Debug skip")).SetValue(new KeyBind('G', KeyBindType.Press));
+               Config.SubMenu("debug").AddItem(new MenuItem("debugOn", "Debug stuff")).SetValue(new KeyBind('A', KeyBindType.Press));
                 Config.SubMenu("debug").AddItem(new MenuItem("showPrio", "Show priorities")).SetValue(false);
 
                 Config.AddToMainMenu();
@@ -145,7 +152,7 @@ namespace HypaJungle
         {
             if (Config.Item("skipSpawn").GetValue<KeyBind>().Active) //fullDMG
             {
-                if (JungleClearer.focusedCamp != null && lastSkip+2<Game.Time)
+                if (JungleClearer.focusedCamp != null && lastSkip+1<Game.Time)
                 {
                     lastSkip = Game.Time;
                     JungleClearer.skipCamp = JungleClearer.focusedCamp;
@@ -155,7 +162,18 @@ namespace HypaJungle
 
             if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
             {
-                Console.WriteLine("BuyThings: "+JungleClearer.jungler.buyThings.First().goldReach);
+               /* foreach (SpellDataInst spell in player.Spellbook.Spells)
+                {
+                    Console.WriteLine(spell.Name.ToLower());
+                }*/
+                Console.WriteLine(player.GetSpellSlot("summonersmite"));
+
+                foreach (SpellDataInst spell in player.SummonerSpellbook.Spells)
+                {
+                    Console.WriteLine(spell.Name.ToLower()+"  "+spell.Slot);
+                }
+               
+
             }
             if (Config.Item("doJungle").GetValue<KeyBind>().Active) //fullDMG
             {
@@ -178,6 +196,9 @@ namespace HypaJungle
 
         private static void onDraw(EventArgs args)
         {
+            if (!Config.Item("drawStuff").GetValue<bool>())
+                return;
+
             Drawing.DrawText(200, 200, Color.Green, JungleClearer.jcState.ToString() +" : "+player.Position.X+ " : "+player.Position.Y+ " : "
                 +player.Position.Z+ " : ");
             if (JungleClearer.jungler.nextItem != null)
@@ -190,6 +211,7 @@ namespace HypaJungle
                 var pScreen = Drawing.WorldToScreen(min.Position);
                 Drawing.DrawText(pScreen.X, pScreen.Y, Color.Red, min.Name+" : "+min.MaxHealth);
             }
+
 
 
             Drawing.DrawCircle(JungleClearer.getBestBuffCamp().Position, 500, Color.BlueViolet);

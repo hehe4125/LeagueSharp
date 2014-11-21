@@ -50,7 +50,7 @@ namespace HypaJungle
             new JungleCamp //Wight
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(1859.131f, 8246.272f, 54.92376f),
                 Minions = new List<JungleMinion>
                 {
@@ -82,7 +82,7 @@ namespace HypaJungle
             new JungleCamp //Wolfs
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(3415.77f, 6269.637f, 55.60973f),
                 Minions = new List<JungleMinion>
                 {
@@ -98,7 +98,7 @@ namespace HypaJungle
             new JungleCamp //Wraith
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6447.0f, 5384.0f, 60.0f),
                 Minions = new List<JungleMinion>
                 {
@@ -131,7 +131,7 @@ namespace HypaJungle
             new JungleCamp //Golems
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(8042.148f, 2274.269f, 54.2764f),
                 Minions = new List<JungleMinion>
                 {
@@ -147,7 +147,7 @@ namespace HypaJungle
             new JungleCamp //Golems
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6005.0f, 12055.0f, 39.62551f),
                 Minions = new List<JungleMinion>
                 {
@@ -178,7 +178,7 @@ namespace HypaJungle
             new JungleCamp //Wraith
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(7534.319f, 9226.513f, 55.50048f),
                 Minions = new List<JungleMinion>
                 {
@@ -195,7 +195,7 @@ namespace HypaJungle
             new JungleCamp //Wolfs
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(10575.0f, 8083.0f, 65.5235f),
                 Minions = new List<JungleMinion>
                 {
@@ -228,7 +228,7 @@ namespace HypaJungle
             new JungleCamp //Wight
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
-                RespawnTimer = TimeSpan.FromSeconds(50),
+                RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(12287.0f, 6205.0f, 54.84151f),
                 Minions = new List<JungleMinion>
                 {

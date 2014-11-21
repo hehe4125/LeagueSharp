@@ -87,7 +87,7 @@ namespace HypaJungle
 
             if (jcState == JungleCleanState.RunningToCamp)
             {
-                if(focusedCamp.State != JungleCampState.Dead)
+                if (focusedCamp.State != JungleCampState.Dead && focusedCamp.team != 3)
                     jungler.castWhenNear(focusedCamp);
                 jungler.checkItems();
                 logicRunToCamp();
@@ -126,6 +126,9 @@ namespace HypaJungle
                 if (!HypaJungle.Config.Item("autoBuy").GetValue<bool>())
                     jcState = JungleCleanState.SearchingBestCamp;
 
+                if (jungler.inSpwan())
+                    jungler.setupSmite();
+
                 if (jungler.inSpwan() && player.IsChanneling)
                 {
                     Vector3 stopRecPos = new Vector3(6, 30, 2);
@@ -143,8 +146,6 @@ namespace HypaJungle
                 }
                 else
                 {
-                    
-
                     Console.WriteLine("fuk up shop");
                     if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.9f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.9f))
                         jcState = JungleCleanState.SearchingBestCamp;
@@ -208,15 +209,15 @@ namespace HypaJungle
 
         public static void attackCampMinions()
         {
-            List<JungleMinion> campMinions = focusedCamp.Minions.Where(min => min.Unit != null && !min.Dead).OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth) .ToList();
-            if (campMinions.Count() ==0)
+            List<JungleMinion> campMinions = focusedCamp.Minions.Where(min => min.Unit != null && !min.Dead).OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).ToList();
+            /*if (campMinions.Count() ==0)
             {
                 getJungleMinionsManualy();
             }
             else//do all attacking
-            {
+            {*/
                 jungler.startAttack((Obj_AI_Minion)campMinions.FirstOrDefault().Unit);
-            }
+            //}
 
         }
 
@@ -274,8 +275,11 @@ namespace HypaJungle
             if (camp.isDragBaron)
                 return 99999;
 
-            if ((camp.team == 0 && HypaJungle.player.Team == GameObjectTeam.Chaos)
-                ||(camp.team == 1 && HypaJungle.player.Team == GameObjectTeam.Order))
+            if (((camp.team == 0 && HypaJungle.player.Team == GameObjectTeam.Chaos)
+                || (camp.team == 1 && HypaJungle.player.Team == GameObjectTeam.Order)) && !HypaJungle.Config.Item("enemyJung").GetValue<bool>())
+                return 999;
+
+            if (camp.team == 3 && !HypaJungle.Config.Item("doCrabs").GetValue<bool>())
                 return 999;
 
             int priority = 0;

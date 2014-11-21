@@ -86,6 +86,10 @@ namespace HypaJungle
                     }
                     if (po.Hitchance == HitChance.Collision)
                     {
+                        if (player.Distance(minion) > 500)
+                        {
+                            Q.Cast(po.CastPosition);
+                        }
                         player.IssueOrder(GameObjectOrder.MoveTo, minion.Position);
                     }
                 }
