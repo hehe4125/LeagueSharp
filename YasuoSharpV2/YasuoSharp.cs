@@ -213,7 +213,7 @@ namespace YasuoSharpV2
                 {
                     Yasuo.Q.SetSkillshot(Yasuo.getNewQSpeed(), 50f, float.MaxValue, false, SkillshotType.SkillshotLine);
 
-                    if (Yasuo.startDash + 1f < Game.Time && Yasuo.isDashigPro)
+                    if (Yasuo.startDash + 475000/((700 + Yasuo.Player.MoveSpeed)) < Environment.TickCount && Yasuo.isDashigPro)
                     {
                         Yasuo.isDashigPro = false;
                     }
@@ -359,7 +359,13 @@ namespace YasuoSharpV2
                 {
                     ss.Draw(Color.CadetBlue, Color.Red, 1);
                 }
-
+                foreach (Obj_AI_Base jun in MinionManager.GetMinions(Yasuo.Player.ServerPosition, 700, MinionTypes.All, MinionTeam.Neutral))
+                {
+                    Drawing.DrawCircle(jun.Position, 70, Color.Green);
+                    SharpDX.Vector2 posAfterE = jun.ServerPosition.To2D() + (SharpDX.Vector2.Normalize(Yasuo.Player.Position.To2D() - jun.ServerPosition.To2D()) * 475);
+                    Drawing.DrawCircle(posAfterE.To3D(), 50, Color.Violet);
+                }
+            
                 /*   if ((int)NavMesh.GetCollisionFlags(Game.CursorPos) == 2 || (int)NavMesh.GetCollisionFlags(Game.CursorPos) == 64)
                     Drawing.DrawCircle(Game.CursorPos, 70, Color.Green);
                 if (map.isWall(Game.CursorPos.To2D()))
@@ -437,7 +443,7 @@ namespace YasuoSharpV2
                         Yasuo.lastDash.from = Yasuo.Player.Position;
                         Yasuo.isDashigPro = true;
                         Yasuo.castFrom = Yasuo.Player.Position;
-                        Yasuo.startDash = Game.Time;
+                        Yasuo.startDash = Environment.TickCount;
                     }
                 }
             }
