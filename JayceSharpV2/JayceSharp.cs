@@ -62,6 +62,7 @@ namespace JayceSharpV2
                 Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
                 Config.SubMenu("combo").AddItem(new MenuItem("comboItems", "Use Items")).SetValue(true);
                 Config.SubMenu("combo").AddItem(new MenuItem("hammerKill", "Hammer if killable")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("parlelE", "use pralel gate")).SetValue(true);
                 Config.SubMenu("combo").AddItem(new MenuItem("fullDMG", "Do full damage")).SetValue(new KeyBind('A', KeyBindType.Press));
                 Config.SubMenu("combo").AddItem(new MenuItem("injTarget", "Tower Injection")).SetValue(new KeyBind('G', KeyBindType.Press));
                 Config.SubMenu("combo").AddItem(new MenuItem("awsPress", "Press for awsomeee!!")).SetValue(new KeyBind('Z', KeyBindType.Press));

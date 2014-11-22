@@ -486,8 +486,16 @@ namespace JayceSharpV2
             away = (neg == 1) ? away : -away;
 
             var v2 = Vector3.Normalize(pos - Player.ServerPosition) * away;
-            var bom = new Vector2(v2.Y, -v2.X);
-            return Player.ServerPosition.To2D() + bom;
+            if (JayceSharp.Config.Item("parlelE").GetValue<bool>())
+            {
+                var bom = new Vector2(v2.Y, -v2.X);
+                return Player.ServerPosition.To2D() + bom;
+            }
+            else
+            {
+                var bom = new Vector2(v2.X, v2.Y);
+                return Player.ServerPosition.To2D() + bom;
+            }
         }
 
         //Need to fix!!
