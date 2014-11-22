@@ -134,10 +134,14 @@ namespace HypaJungle
 
         public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
-            player.IssueOrder(GameObjectOrder.AttackUnit, minion);
-            UseQ(minion);
-            UseW(minion);
-            UseE(minion);
+            if (JungleOrbwalker.CanAttack())
+            {
+                UseQ(minion);
+                UseW(minion);
+                UseE(minion);
+                UseR(minion);
+            }
+            JungleOrbwalker.attackMinion(minion, minion.Position.To2D().Extend(player.Position.To2D(), 150).To3D());
         }
 
         public override void castWhenNear(JungleCamp camp)

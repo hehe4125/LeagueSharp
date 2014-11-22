@@ -261,23 +261,27 @@ namespace HypaJungle
                 return;
 
             getJungleMinionsManualy();
-            if (!jungler.gotOverTime || !HypaJungle.Config.Item("getOverTime").GetValue<KeyBind>().Active)
+            Console.WriteLine("awdawg5");
+            if (!jungler.gotOverTime || !HypaJungle.Config.Item("getOverTime").GetValue<bool>())
             {
                     JungleMinion campMinions =
-                   focusedCamp.Minions.Where(min => min != null && min.Unit != null && !min.Unit.IsDead)
+                   focusedCamp.Minions.Where(min => min != null && min.Unit != null && min.Unit is Obj_AI_Minion && !min.Unit.IsDead)
                        .OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).FirstOrDefault();
-                    jungler.startAttack((Obj_AI_Minion)campMinions.Unit, false);
+                    if (campMinions.Unit is Obj_AI_Minion)
+                        jungler.startAttack((Obj_AI_Minion)campMinions.Unit, false);
                 
                
             }
             else
             {
                 JungleMinion campMinions =
-                    focusedCamp.Minions.Where(min => min.Unit != null && !min.Dead)
+                    focusedCamp.Minions.Where(min => min != null && min.Unit != null && min.Unit is Obj_AI_Minion && !min.Unit.IsDead)
                     .OrderBy(min => minHasOvertime(((Obj_AI_Minion)min.Unit))).ThenByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth)
                         .FirstOrDefault();
                        // .OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).First();
-                jungler.startAttack((Obj_AI_Minion)campMinions.Unit,false);
+               
+                if (campMinions.Unit is Obj_AI_Minion)
+                    jungler.startAttack((Obj_AI_Minion)campMinions.Unit,false);
 
             }
 
@@ -295,7 +299,7 @@ namespace HypaJungle
 
         public static void getJungleMinionsManualy()
         {
-            List<Obj_AI_Base> jungles = MinionManager.GetMinions(HypaJungle.player.Position, 500, MinionTypes.All,MinionTeam.Neutral).ToList();
+            List<Obj_AI_Base> jungles = MinionManager.GetMinions(HypaJungle.player.Position, 1000, MinionTypes.All,MinionTeam.Neutral).ToList();
             foreach (var jun in jungles)
             {
                 HypaJungle.jTimer.setUpMinionsPlace((Obj_AI_Minion)jun);
@@ -364,7 +368,7 @@ namespace HypaJungle
             float timeTillSpawn = (camp.State == JungleCampState.Dead)?((revOn - Game.Time > 0) ? (revOn - Game.Time) : 0):0;
 
             camp.willKillMe = false;
-            if (!jungler.canKill(camp, timeToCamp) && HypaJungle.Config.Item("checkKillability").GetValue<KeyBind>().Active)
+            if (!jungler.canKill(camp, timeToCamp) && HypaJungle.Config.Item("checkKillability").GetValue<bool>())
             {
                 priority += 999;
                 camp.willKillMe = true;
@@ -382,7 +386,7 @@ namespace HypaJungle
             //if(!camp.isBuff)
               //  priority -= (isInBuffWay(camp)) ? 10 : 0;
 
-            return (int)priority;
+            return priority;
         }
 
         public static bool isInBuffWay(JungleCamp camp)
