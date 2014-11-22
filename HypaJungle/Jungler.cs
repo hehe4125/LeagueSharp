@@ -188,7 +188,7 @@ namespace HypaJungle
             float bonusDmg = 0;
             float aproxSecTK = (camp.health - bonusDmg) / realDps;
 
-            float secTillIDie = (player.Health + canHeal(timeTo, aproxSecTK)) / (camp.dps*0.8f);
+            float secTillIDie = (player.Health + canHeal(timeTo, aproxSecTK)) / (camp.dps * 0.8f * damageTaken);
             if (smiteSpell.IsReady((int) (secTillIDie + timeTo)*1000))
             {
                 bonusDmg += new float[]

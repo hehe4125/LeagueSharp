@@ -146,12 +146,19 @@ namespace HypaJungle
 
         public override void castWhenNear(JungleCamp camp)
         {
-            if (JungleClearer.focusedCamp != null && Q.IsReady() && Q.Instance.Name == "BlindMonkQOne")
+            if (JungleClearer.focusedCamp != null && Q.IsReady())
             {
-                float dist = player.Distance(JungleClearer.focusedCamp.Position);
-                if (dist < Q.Range * 0.9f && dist > 200)
+                if (Q.Instance.Name == "BlindMonkQOne")
                 {
-                    Q.Cast(camp.Position);
+                    float dist = player.Distance(JungleClearer.focusedCamp.Position);
+                    if (dist < Q.Range*0.9f && dist > 200)
+                    {
+                        Q.Cast(camp.Position);
+                    }
+                }
+                else
+                {
+                    Q.Cast();
                 }
             }
         }

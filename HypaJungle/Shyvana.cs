@@ -65,10 +65,10 @@ namespace HypaJungle
                 },
                 new ItemToShop()
                 {
-                    goldReach = 9999999,
-                    itemsMustHave = new List<int>{3144},
+                    goldReach = 999999,
+                    itemsMustHave = new List<int>{3142},
                     itemIds = new List<int>{}
-                }
+                },
             };
             #endregion
 
@@ -89,7 +89,7 @@ namespace HypaJungle
 
         public override void UseE(Obj_AI_Minion minion)
         {
-            if (E.IsReady())
+            if (E.IsReady() && player.Distance(minion)<E.Range)
                 E.Cast(minion.Position);
         }
 
@@ -100,10 +100,14 @@ namespace HypaJungle
 
         public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
-            player.IssueOrder(GameObjectOrder.AttackUnit, minion);
-            UseQ(minion);
             UseW(minion);
-            UseE(minion);
+            if (JungleOrbwalker.CanAttack())
+            {
+                UseQ(minion);
+                UseE(minion);
+                UseR(minion);
+            }
+            JungleOrbwalker.attackMinion(minion, minion.Position.To2D().Extend(player.Position.To2D(), 100).To3D());
         }
 
         public override void castWhenNear(JungleCamp camp)
@@ -120,7 +124,10 @@ namespace HypaJungle
 
         public override void doAfterAttack(Obj_AI_Base minion)
         {
-            
+            if (minion is Obj_AI_Minion)
+            {
+                UseQ((Obj_AI_Minion)minion);
+            }
         }
 
         public override void doWhileRunningIdlin()

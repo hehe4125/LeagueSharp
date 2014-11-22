@@ -30,7 +30,7 @@ namespace HypaJungle
 
         public static JungleCamp focusedCamp;
 
-        public static bool recalCasted = false;
+        public static bool recalCasted = true;
 
 
         public static JungleCamp skipCamp;
@@ -209,7 +209,8 @@ namespace HypaJungle
 
             if (jcState == JungleCleanState.GoingToShop && jungler.inSpwan())
             {
-                jungler.buyItems();
+                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach )
+                    jungler.buyItems();
                 if (player.Health > player.MaxHealth * 0.9f && player.Mana > player.MaxMana * 0.9f)
                     jcState = JungleCleanState.SearchingBestCamp;
             }
@@ -261,7 +262,6 @@ namespace HypaJungle
                 return;
 
             getJungleMinionsManualy();
-            Console.WriteLine("awdawg5");
             if (!jungler.gotOverTime || !HypaJungle.Config.Item("getOverTime").GetValue<bool>())
             {
                     JungleMinion campMinions =

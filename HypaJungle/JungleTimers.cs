@@ -114,7 +114,7 @@ namespace HypaJungle
             {
                 SpawnTime = TimeSpan.FromSeconds(125),
                 RespawnTimer = TimeSpan.FromSeconds(100),
-                Position = new Vector3(2172.131f, 8450.272f, 51.92376f),
+                Position = new Vector3(2072.131f, 8450.272f, 51.92376f),
                 Minions = new List<JungleMinion>
                 {
                     new JungleMinion("SRU_Gromp13.1.1")
