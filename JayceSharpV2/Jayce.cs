@@ -492,7 +492,7 @@ namespace JayceSharpV2
             }
             else
             {
-                var v2 = Vector3.Normalize(pos - Player.ServerPosition) * 150;
+                var v2 = Vector3.Normalize(pos - Player.ServerPosition) * 300;
                 var bom = new Vector2(v2.X, v2.Y);
                 return Player.ServerPosition.To2D() - bom;
             }
