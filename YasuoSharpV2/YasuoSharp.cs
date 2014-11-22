@@ -332,6 +332,18 @@ namespace YasuoSharpV2
                 if (Config.Item("disDraw").GetValue<bool>())
                     return;
 
+
+                foreach (Obj_AI_Base jun in MinionManager.GetMinions(Yasuo.Player.ServerPosition, 700, MinionTypes.All, MinionTeam.Neutral))
+                {
+                    Drawing.DrawCircle(jun.Position, 70, Color.Green);
+                    Vector2 posAfterE = Yasuo.Player.ServerPosition.To2D() + (Vector2.Normalize(jun.ServerPosition.To2D() - Yasuo.Player.ServerPosition.To2D()) * 475);
+                   // Vector2 posAfterE = Yasuo.Player.Position.To2D().Extend(jun.Position.To2D(), 475);//jun.ServerPosition.To2D().Extend() + (Vector2.Normalize(Yasuo.Player.Position.To2D() - jun.ServerPosition.To2D()) * 475);
+                    Drawing.DrawCircle(posAfterE.To3D(), 50, Color.Violet);
+                    Vector3 posAfterDash = Yasuo.Player.GetPath(posAfterE.To3D()).Last();
+                    Drawing.DrawCircle(posAfterDash, 50, Color.DarkRed);
+
+                }
+
                 if (Config.Item("drawQ").GetValue<bool>())
                     Utility.DrawCircle(Yasuo.Player.Position, 475, (Yasuo.isDashigPro) ? Color.Red : Color.Blue, 10, 10);
                 if (Config.Item("drawR").GetValue<bool>())
@@ -359,12 +371,7 @@ namespace YasuoSharpV2
                 {
                     ss.Draw(Color.CadetBlue, Color.Red, 1);
                 }
-                foreach (Obj_AI_Base jun in MinionManager.GetMinions(Yasuo.Player.ServerPosition, 700, MinionTypes.All, MinionTeam.Neutral))
-                {
-                    Drawing.DrawCircle(jun.Position, 70, Color.Green);
-                    SharpDX.Vector2 posAfterE = jun.ServerPosition.To2D() + (SharpDX.Vector2.Normalize(Yasuo.Player.Position.To2D() - jun.ServerPosition.To2D()) * 475);
-                    Drawing.DrawCircle(posAfterE.To3D(), 50, Color.Violet);
-                }
+                
             
                 /*   if ((int)NavMesh.GetCollisionFlags(Game.CursorPos) == 2 || (int)NavMesh.GetCollisionFlags(Game.CursorPos) == 64)
                     Drawing.DrawCircle(Game.CursorPos, 70, Color.Green);
