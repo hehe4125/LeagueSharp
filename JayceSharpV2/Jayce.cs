@@ -480,21 +480,21 @@ namespace JayceSharpV2
 
         public static Vector2 getParalelVec(Vector3 pos)
         {
-            Random rnd = new Random();
-            int neg = rnd.Next(0, 1);
-            int away = JayceSharp.Config.Item("eAway").GetValue<Slider>().Value;
-            away = (neg == 1) ? away : -away;
-
-            var v2 = Vector3.Normalize(pos - Player.ServerPosition) * away;
             if (JayceSharp.Config.Item("parlelE").GetValue<bool>())
             {
+                Random rnd = new Random();
+                int neg = rnd.Next(0, 1);
+                int away = JayceSharp.Config.Item("eAway").GetValue<Slider>().Value;
+                away = (neg == 1) ? away : -away;
+                var v2 = Vector3.Normalize(pos - Player.ServerPosition) * away;
                 var bom = new Vector2(v2.Y, -v2.X);
                 return Player.ServerPosition.To2D() + bom;
             }
             else
             {
+                var v2 = Vector3.Normalize(pos - Player.ServerPosition) * 150;
                 var bom = new Vector2(v2.X, v2.Y);
-                return Player.ServerPosition.To2D() + bom;
+                return Player.ServerPosition.To2D() - bom;
             }
         }
 
