@@ -30,11 +30,11 @@ namespace HypaJungle
             }
                 MoveTo(moveTo);
         }
-        public static bool CanAttack()
+        public static bool CanAttack(int inMS =0)
         {
             if (_lastAATick <= Environment.TickCount)
             {
-                return Environment.TickCount + Game.Ping / 2 + 25 >= _lastAATick + player.AttackDelay * 1000+130;
+                return Environment.TickCount + Game.Ping / 2 + 25 + inMS >= _lastAATick + player.AttackDelay * 1000 + 130;
             }
             return false;
         }
@@ -84,7 +84,7 @@ namespace HypaJungle
         public static bool CanMove()
         {
             var extraWindup = 70;
-            if (_lastAATick <= Environment.TickCount)
+            if (_lastAATick <= Environment.TickCount && !player.IsChanneling)
                 return Environment.TickCount + Game.Ping / 2 >= _lastAATick + player.AttackCastDelay * 1000 + extraWindup;
             return false;
         }

@@ -159,10 +159,18 @@ namespace HypaJungle
                 float DamageAmount = gp.ReadFloat();
                 int TargetNetworkIdCopy = gp.ReadInteger();
                 int SourceNetworkId = gp.ReadInteger();
-                if (player.NetworkId != dmg.SourceNetworkId)
+                float dmga = (float)player.GetAutoAttackDamage(ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(targetID));
+                if (dmga - 10 > DamageAmount || dmga + 10 < DamageAmount)
+                    return;
+                if (player.NetworkId != dmg.SourceNetworkId || player.NetworkId == targetID || player.NetworkId == TargetNetworkIdCopy)
                     return;
                 Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
-                JungleClearer.jungler.doAfterAttack(targ);
+                if ((int) dmg.Type == 12 || (int) dmg.Type == 4 || (int) dmg.Type == 3)
+                {
+                    Console.WriteLine("dmg: " + DamageAmount + " : " + dmga);
+
+                    JungleClearer.jungler.doAfterAttack(targ);
+                }
 
             }
         }
@@ -187,17 +195,25 @@ namespace HypaJungle
 
             if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
             {
-                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(player))
+               /* foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(player))
                 {
                     string name = descriptor.Name;
                     object value = descriptor.GetValue(player);
                     if (name.Contains("cent"))
                         Console.WriteLine("{0}={1}", name, value);
-                }
+                }*/
 
                 foreach (var item in player.InventoryItems)
                 {
                     Console.WriteLine(item.Id+" : "+item.Name);
+                }
+
+                Console.WriteLine(player.Mana);
+
+                foreach (var buf in player.Buffs)
+                {
+
+                    Console.WriteLine(buf.Name);
                 }
 
                /* foreach (SpellDataInst spell in player.Spellbook.Spells)
@@ -236,7 +252,7 @@ namespace HypaJungle
             if (!Config.Item("drawStuff").GetValue<bool>())
                 return;
 
-            Drawing.DrawText(200, 200, Color.Green, JungleClearer.jcState.ToString() +" : "+player.Position.X+ " : "+player.Position.Y+ " : "
+            Drawing.DrawText(200, 200, Color.Green, JungleClearer.jcState.ToString() + ": " + JungleClearer.jungler.dpsFix + " : " + player.Position.X + " : " + player.Position.Y + " : "
                 + player.Position.Z + " : ");
             Drawing.DrawText(200, 220, Color.Green, "DoOver: " + JungleClearer.jungler.overTimeName+" : "+JungleClearer.jungler.gotOverTime);
 

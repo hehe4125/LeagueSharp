@@ -13,6 +13,16 @@ namespace HypaJungle
     abstract class Jungler
     {
         //Ty tc-crew
+
+        public enum StartCamp
+        {
+            Any =0,
+            Blue = 1,
+            Red = 2,
+            Frog = 3,
+            Golems = 4,
+        }
+
         private enum PotionType
         {
             Health = 2003,
@@ -61,6 +71,8 @@ namespace HypaJungle
         public bool gotOverTime = false;
         public string overTimeName = "";
         public float damageTaken = 1.0f;
+        public int extraWindUp = 150;
+        public StartCamp startCamp = StartCamp.Any;
 
         public abstract void setUpSpells();
         public abstract void setUpItems();
@@ -114,6 +126,7 @@ namespace HypaJungle
         public void startAttack(Obj_AI_Minion minion, bool onlyAA)
         {
             usePots();
+            getDPS(minion);
 
             if (minion == null || !minion.IsValid || !minion.IsVisible)
                 return;
@@ -129,7 +142,7 @@ namespace HypaJungle
             }
             else
             {
-                if (minion.Health / getDPS(minion) > ((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff).Any()) ? 7 : 4) || (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
+                if (minion.Health / getDPS(minion) > ((!HypaJungle.jTimer._jungleCamps.Where(cp => cp.isBuff).Any()) ? 8 : 5)*(player.Health/player.MaxHealth) || (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
                     doSmite(minion);
             }
            
@@ -188,7 +201,7 @@ namespace HypaJungle
             float bonusDmg = 0;
             float aproxSecTK = (camp.health - bonusDmg) / realDps;
 
-            float secTillIDie = (player.Health + canHeal(timeTo, aproxSecTK)) / (camp.dps * 0.8f * damageTaken);
+            float secTillIDie = (player.Health + canHeal(timeTo, aproxSecTK)) / (camp.dps * 0.8f * damageTaken*(100+player.Level*3)/100);
             if (smiteSpell.IsReady((int) (secTillIDie + timeTo)*1000))
             {
                 bonusDmg += new float[]
@@ -209,8 +222,7 @@ namespace HypaJungle
                 return;
             for (int i = buyThings.Count - 1; i >= 0; i--)
             {
-                bool hasThemAll = buyThings[i].itemsMustHave.All(item => Items.HasItem(item));
-                if (hasThemAll)
+                if (hasAllItems(buyThings[i]))
                 {
                     nextItem = buyThings[i];
                     if (i == buyThings.Count - 1)
@@ -221,6 +233,27 @@ namespace HypaJungle
                     return;
                 }
             }
+        }
+
+        public bool hasAllItems(ItemToShop its)
+        {
+            bool[] usedItems = new bool[7];
+            int itemsMatch = 0;
+            for (int j = 0; j < its.itemsMustHave.Count; j++)
+            {
+                for (int i = 0; i < player.InventoryItems.Count(); i++)
+                {
+                    if (usedItems[i])
+                        continue;
+                    if (its.itemsMustHave[j] == (int)player.InventoryItems[i].Id)
+                    {
+                        usedItems[i] = true;
+                        itemsMatch++;
+                        break;
+                    }
+                }              
+            }
+            return itemsMatch == its.itemsMustHave.Count;
         }
 
         public void buyItems()

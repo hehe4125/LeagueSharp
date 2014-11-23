@@ -147,7 +147,7 @@ namespace HypaJungle
             },
             new JungleCamp //Wolfs
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(3842.77f, 6462.637f, 52.60973f),
                 Minions = new List<JungleMinion>
@@ -158,14 +158,14 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
-                dps = (int)(73*0.49+24*0.64),
+                dps = (int)(73*0.59),
                 health = 1320,
                 team = 0,
                 campId = 2
             },
             new JungleCamp //Wraith
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6926.0f, 5400.0f, 51.0f),
                 Minions = new List<JungleMinion>
@@ -178,7 +178,7 @@ namespace HypaJungle
                 isBuff = false,
                 isDragBaron = false,
                 dps = (int)(70*0.64f),
-                health = 1200,
+                health = 1600,
                 team = 0,
                 campId = 3
             },
@@ -202,7 +202,7 @@ namespace HypaJungle
             },
             new JungleCamp //Golems
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(8404.148f, 2726.269f, 51.2764f),
                 Minions = new List<JungleMinion>
@@ -216,12 +216,12 @@ namespace HypaJungle
                 health = 1440,
                 team = 0,
                 campId = 5,
-                bonusPrio = 3
+                bonusPrio = 7
             },
             //Chaos
             new JungleCamp //Golems
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(6424.0f, 12156.0f, 56.62551f),
                 Minions = new List<JungleMinion>
@@ -257,7 +257,7 @@ namespace HypaJungle
             },
             new JungleCamp //Wraith
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(7970.319f, 9410.513f, 52.50048f),
                 Minions = new List<JungleMinion>
@@ -270,13 +270,13 @@ namespace HypaJungle
                 isBuff = false,
                 isDragBaron = false,
                 dps = (int)(70*0.64f),
-                health = 1200,
+                health = 1600,
                 team = 1,
                 campId = 9
             },
             new JungleCamp //Wolfs
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(10972.0f, 8306.0f, 62.5235f),
                 Minions = new List<JungleMinion>
@@ -287,7 +287,7 @@ namespace HypaJungle
                 },
                 isBuff = false,
                 isDragBaron = false,
-                dps = (int)(73*0.49+24*0.64),
+                dps = (int)(73*0.59),
                 health = 1320,
                 team = 1,
                 campId = 8
@@ -313,7 +313,7 @@ namespace HypaJungle
             },
             new JungleCamp //Wight
             {
-                SpawnTime = TimeSpan.FromSeconds(125),
+                SpawnTime = TimeSpan.FromSeconds(115),
                 RespawnTimer = TimeSpan.FromSeconds(100),
                 Position = new Vector3(12770.0f, 6468.0f, 51.84151f),
                 Minions = new List<JungleMinion>

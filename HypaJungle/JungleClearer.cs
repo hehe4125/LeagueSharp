@@ -79,6 +79,12 @@ namespace HypaJungle
 
         public static void updateJungleCleaner()
         {
+            if (player.IsDead)
+            {
+                jcState = JungleCleanState.RecallForHeal;
+                return;
+            }
+
             if (jcState == JungleCleanState.SearchingBestCamp)
             {
                 focusedCamp = getBestCampToGo();
@@ -159,7 +165,7 @@ namespace HypaJungle
                     }
                     else
                     {
-                        if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.9f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.9f))
+                        if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.7f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.7f))
                             jcState = JungleCleanState.SearchingBestCamp;
                     }
                 }
@@ -194,8 +200,7 @@ namespace HypaJungle
                 }
                 else
                 {
-                    Console.WriteLine("fuk up shop");
-                    if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.9f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.9f))
+                    if (jungler.inSpwan() && player.Health > player.MaxHealth * 0.8f && (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f))
                         jcState = JungleCleanState.SearchingBestCamp;
                     if(!player.IsChanneling && !jungler.inSpwan())
                         jcState = JungleCleanState.SearchingBestCamp;
@@ -211,9 +216,22 @@ namespace HypaJungle
             {
                 if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach )
                     jungler.buyItems();
-                if (player.Health > player.MaxHealth * 0.9f && player.Mana > player.MaxMana * 0.9f)
+                if (player.Health > player.MaxHealth * 0.75f && player.Mana > player.MaxMana * 0.75f)
                     jcState = JungleCleanState.SearchingBestCamp;
             }
+        }
+
+        public static bool canLeaveBase()
+        {
+            if (jungler.inSpwan() && player.Health > player.MaxHealth*0.7f &&
+                (!jungler.gotMana || player.Mana > player.MaxMana*0.7f))
+            {
+                if (jungler.nextItem.goldReach - player.GoldCurrent > 16)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static bool noEnemiesAround()
@@ -379,6 +397,19 @@ namespace HypaJungle
             priority -= (camp.isBuff) ? jungler.buffPriority : 0;
             //priority -= (int)(timeTillSpawn - timeToCamp);
             //alive on come is better ;)
+            //Priority focus!!
+            if (player.Level <= 3)
+            {
+                if ((camp.campId == 10 || camp.campId == 4) & jungler.startCamp == Jungler.StartCamp.Red)
+                    priority -= 5;
+                if ((camp.campId == 1 || camp.campId == 7) & jungler.startCamp == Jungler.StartCamp.Blue)
+                    priority -= 5;
+                if ((camp.campId == 11 || camp.campId == 5) & jungler.startCamp == Jungler.StartCamp.Golems)
+                    priority -= 5;
+                if ((camp.campId == 14 || camp.campId == 13) & jungler.startCamp == Jungler.StartCamp.Frog)
+                    priority -= 5;
+            }
+
 
             camp.priority = priority;
             camp.timeToCamp = timeToCamp;

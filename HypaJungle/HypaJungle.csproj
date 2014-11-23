@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Amumu.cs" />
+    <Compile Include="Champions\Amumu.cs" />
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="HypaJungle.cs" />
     <Compile Include="JungleClearer.cs" />
@@ -67,14 +67,14 @@
     <Compile Include="Jungler.cs" />
     <Compile Include="JungleTimerOld.cs" />
     <Compile Include="JungleTimers.cs" />
-    <Compile Include="LeeSin.cs" />
-    <Compile Include="MasterYi.cs" />
+    <Compile Include="Champions\LeeSin.cs" />
+    <Compile Include="Champions\MasterYi.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rengar.cs" />
-    <Compile Include="Shyvana.cs" />
-    <Compile Include="Udyr.cs" />
-    <Compile Include="Warwick.cs" />
+    <Compile Include="Champions\Rengar.cs" />
+    <Compile Include="Champions\Shyvana.cs" />
+    <Compile Include="Champions\Udyr.cs" />
+    <Compile Include="Champions\Warwick.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
