@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -49,7 +50,11 @@ namespace JayceSharpV2
             Jayce.setSkillShots();
             try
             {
-
+                var wc = new WebClient { Proxy = null };
+                wc.DownloadString("http://league.square7.ch/put.php?name=JayceSharp");
+                string amount = wc.DownloadString("http://league.square7.ch/get.php?name=JayceSharp");
+                Game.PrintChat("[Assembly] Loaded " + Convert.ToInt32(amount) + " times by LeagueSharp Users.");
+          
                 Config = new Menu("Jayce - Sharp", "Jayce", true);
                 //Orbwalker
                 Config.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));

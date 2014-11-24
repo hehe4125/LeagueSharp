@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using System.Drawing;
-
+using System.Net;
 /*
  * ToDo:
  * 
@@ -43,7 +43,13 @@ namespace KhazixSharp
             Game.PrintChat("Khazix - Sharp by DeTuKs");
 
             try
-            {
+            {	
+				var wc = new WebClient {Proxy = null};
+
+				wc.DownloadString("http://league.square7.ch/put.php?name=KhaZixSharp");
+				string amount = wc.DownloadString("http://league.square7.ch/get.php?name=KhaZixSharp");
+				Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
+                
 
                 Config = new Menu("KhazixSharp", "Khazix", true);
                 //Orbwalker

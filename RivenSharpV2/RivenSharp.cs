@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-
+using System.Net;
 using LeagueSharp;
 using LeagueSharp.Common;
 /*TODO
@@ -71,6 +71,12 @@ namespace RivenSharp
             {
                 if (Riven.Player.ChampionName != "Riven") return;
 
+			var wc = new WebClient {Proxy = null};
+
+			wc.DownloadString("http://league.square7.ch/put.php?name=RivenSharp");
+			string amount = wc.DownloadString("http://league.square7.ch/get.php?name=RivenSharp");
+			Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
+                
             Game.PrintChat("RivenSharp by DeTuKs");
             Config = new Menu("Riven - Sharp", "Riven", true);
             //Orbwalkervar menu = new Menu("My Mainmenu", "my_mainmenu", true);

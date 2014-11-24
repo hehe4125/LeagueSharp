@@ -8,7 +8,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
-
+using System.Net;
 namespace YasuoSharpV2
 {
         internal class YasuoSharp
@@ -57,6 +57,14 @@ namespace YasuoSharpV2
 
                 try
                 {
+				
+			
+					var wc = new WebClient {Proxy = null};
+
+					wc.DownloadString("http://league.square7.ch/put.php?name=YasouSharp");
+					string amount = wc.DownloadString("http://league.square7.ch/get.php?name=YasouSharp");
+					Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
+			 
 
                     Config = new Menu("YasuoSharp", "Yasuo", true);
                     //Orbwalker
