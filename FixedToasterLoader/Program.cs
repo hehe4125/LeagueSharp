@@ -14,13 +14,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+using System.Net;
 namespace ToasterLoading
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
+			var wc = new WebClient {Proxy = null};
+			wc.DownloadString("http://league.square7.ch/put.php?name=ToasterLoader");
+            string amount = wc.DownloadString("http://league.square7.ch/get.php?name=ToasterLoader");
+            Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
             new ToasterLoading();
         }
     }
