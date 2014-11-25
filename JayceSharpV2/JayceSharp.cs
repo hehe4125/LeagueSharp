@@ -45,6 +45,8 @@ namespace JayceSharpV2
 
         private static void onLoad(EventArgs args)
         {
+            if (ObjectManager.Player.ChampionName != CharName)
+                return;
 
             Game.PrintChat("Jayce - SharpV2 by DeTuKs");
             Jayce.setSkillShots();
