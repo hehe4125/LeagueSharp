@@ -25,6 +25,7 @@ namespace HypaJungle.Camps
             SpawnTime = TimeSpan.FromSeconds(115);
             RespawnTimer = TimeSpan.FromSeconds(300);
             useOverTime = false;
+            bonusPrioLowLvl = -1;
             onRespawn();
         }
 

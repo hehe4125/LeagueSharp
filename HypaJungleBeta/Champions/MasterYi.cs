@@ -17,7 +17,7 @@ namespace HypaJungle
         {
             setUpSpells();
             setUpItems();
-            levelUpSeq = new Spell[] { Q, W, E, Q, Q, R, Q, E, Q, E, R, E, E, W, W, R, W };
+            levelUpSeq = new Spell[] { Q, W, W, E, Q, R, Q, Q, Q, E, R, E, E, E, W, R, W };
             buffPriority = 6;
             startCamp = StartCamp.Golems;
         }   

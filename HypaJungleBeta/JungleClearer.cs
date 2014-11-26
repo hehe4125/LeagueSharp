@@ -212,7 +212,7 @@ namespace HypaJungle
                     player.IssueOrder(GameObjectOrder.MoveTo, player.Position + stopRecPos);
                 }
 
-                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach && !recalCasted)
+                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach && recalCasted)
                 {
                     if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
                     {
@@ -222,7 +222,7 @@ namespace HypaJungle
                 else
                 {
                     if (jungler.inSpwan() && player.Health > player.MaxHealth*0.8f &&
-                        (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f) && (jungler.nextItem==null ||  player.GoldCurrent - jungler.nextItem.goldReach>40))
+                        (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f) && (jungler.nextItem==null))
                     {
                         jcState = JungleCleanState.SearchingBestCamp;
                         Console.WriteLine("SearchingBestCamp");

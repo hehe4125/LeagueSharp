@@ -144,11 +144,11 @@ namespace HypaJungle
                 Console.WriteLine("force smite!!!!");
             }
             //Update camp
-            campFighting.willKillMe = hpLeftAfter < 100;
+            campFighting.willKillMe = hpLeftAfter < 250;
             campFighting.hpLeftAfterFight = hpLeftAfter;
             campFighting.timeToCamp = timeToKill;
 
-            return hpLeftAfter > 100;
+            return hpLeftAfter > 250;
         }
 
         public float getSmiteCd(float inTime =0)
