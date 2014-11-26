@@ -40,42 +40,66 @@ namespace HypaJungle
                 {
                     goldReach = 475,
                     itemsMustHave = new List<int>{},
-                    itemIds = new List<int>{1039,2003,2003,3166}
+                    itemIds = new List<int>{1039,2003,2003,3340}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 350,
+                    goldReach = 675,
                     itemsMustHave = new List<int>{1039},
-                    itemIds = new List<int>{3715}
-                },
-                new ItemToShop()
-                {
-                    goldReach = 350,
-                    itemsMustHave = new List<int>{3715},
-                    itemIds = new List<int>{1001}
+                    itemIds = new List<int>{3713,1001}
                 },
                 new ItemToShop()
                 {
                     goldReach = 900,
-                    itemsMustHave = new List<int>{3715,1001},
+                    itemsMustHave = new List<int>{3713,1001},
                     itemIds = new List<int>{1042,1042}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 700,
-                    itemsMustHave = new List<int>{1042,1042},
-                    itemIds = new List<int>{3718}
-                },
-                new ItemToShop()
-                {
                     goldReach = 600,
-                    itemsMustHave = new List<int>{1042,1042,3715},
-                    itemIds = new List<int>{3718}
+                    itemsMustHave = new List<int>{1042,1042,3713},
+                    itemIds = new List<int>{3726}
                 },
                 new ItemToShop()
                 {
-                    goldReach = 999999,
-                    itemsMustHave = new List<int>{3718},
+                    goldReach = 875,
+                    itemsMustHave = new List<int>{3726},
+                    itemIds = new List<int>{1037}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 1425,
+                    itemsMustHave = new List<int>{1037},
+                    itemIds = new List<int>{3035}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 1337,
+                    itemsMustHave = new List<int>{3035},
+                    itemIds = new List<int>{3134}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 1363,
+                    itemsMustHave = new List<int>{3134},
+                    itemIds = new List<int>{3142}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 1400,
+                    itemsMustHave = new List<int>{3142},
+                    itemIds = new List<int>{3144}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 1800,
+                    itemsMustHave = new List<int>{3144},
+                    itemIds = new List<int>{3153}
+                },
+                new ItemToShop()
+                {
+                    goldReach = 88888999,
+                    itemsMustHave = new List<int>{3153},
                     itemIds = new List<int>{}
                 },
             };

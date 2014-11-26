@@ -24,7 +24,7 @@ namespace HypaJungle.Camps
             };
             SpawnTime = TimeSpan.FromSeconds(115);
             RespawnTimer = TimeSpan.FromSeconds(100);
-            bonusPrioLowLvl = 2;
+            bonusPrioLowLvl = 3;
             onRespawn();
             worthSmiting = false;
             useOverTime = false;
@@ -60,7 +60,7 @@ namespace HypaJungle.Camps
             LevelTimeGrowth ltg = new LevelTimeGrowth
             {
                 healthPL = 66,//find out
-                attackDamagePL = 4f//find out
+                attackDamagePL = 4.5f//find out
             };
             JungleMinion SRU_Murkwofl = new JungleMinion("SRU_Murkwolf" + campId + ".1." + count + "", bStats, ltg, JungleMinion.SmiteBuff.HeavyHands, JungleMinion.Buff.None);
             return SRU_Murkwofl;

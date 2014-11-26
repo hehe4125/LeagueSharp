@@ -95,7 +95,7 @@ namespace HypaJungle
                 if (focusedCamp != null)
                 {
                     //puss out or kill?
-                    if ( (focusedCamp.willKillMe  || (focusedCamp.timeToCamp>16 && player.Health/player.MaxHealth<0.3f)))
+                    if ( (focusedCamp.willKillMe  || (focusedCamp.priority>25 && player.Health/player.MaxHealth<0.85f)))
                     {
                         Console.WriteLine("gona diee");
                         jcState = JungleCleanState.RecallForHeal;
@@ -212,18 +212,17 @@ namespace HypaJungle
                     player.IssueOrder(GameObjectOrder.MoveTo, player.Position + stopRecPos);
                 }
 
-                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach )
+                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach && !recalCasted)
                 {
                     if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
                     {
                         jungler.recall.Cast();
-                        recalCasted = true;
                     }
                 }
                 else
                 {
                     if (jungler.inSpwan() && player.Health > player.MaxHealth*0.8f &&
-                        (!jungler.gotMana || player.Mana > player.MaxMana*0.8f))
+                        (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f) && (jungler.nextItem==null ||  player.GoldCurrent - jungler.nextItem.goldReach>40))
                     {
                         jcState = JungleCleanState.SearchingBestCamp;
                         Console.WriteLine("SearchingBestCamp");
@@ -236,7 +235,7 @@ namespace HypaJungle
 
                 }
             }
-            else if (jcState != JungleCleanState.RecallForHeal)
+            else if (jcState != JungleCleanState.RecallForHeal && jcState != JungleCleanState.GoingToShop)
             {
                 recalCasted = false;
             }
@@ -251,6 +250,11 @@ namespace HypaJungle
                     Console.WriteLine("SearchingBestCamp");
                 }
             }
+        }
+
+        public static void cantRecall()
+        {
+            recalCasted = true;
         }
 
         public static bool canLeaveBase()

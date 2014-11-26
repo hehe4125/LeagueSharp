@@ -258,6 +258,7 @@ namespace HypaJungle
             else
             {
                 JungleClearer.jcState = JungleClearer.JungleCleanState.GoingToShop;
+                JungleClearer.recalCasted = false;
             }
 
         }

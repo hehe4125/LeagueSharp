@@ -250,7 +250,7 @@ namespace HypaJungle
 
         public bool hasAllItems(ItemToShop its)
         {
-            bool[] usedItems = new bool[7];
+            bool[] usedItems = new bool[player.InventoryItems.Count()+1];
             int itemsMatch = 0;
             for (int j = 0; j < its.itemsMustHave.Count; j++)
             {
