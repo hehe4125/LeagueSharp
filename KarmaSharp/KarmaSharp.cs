@@ -42,12 +42,7 @@ namespace KarmaSharp
             try
             {
 
-				var wc = new WebClient {Proxy = null};
-
-				wc.DownloadString("http://league.square7.ch/put.php?name=KarmaSharp");
-				string amount = wc.DownloadString("http://league.square7.ch/get.php?name=KarmaSharp");
-				Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
-                Config = new Menu("Karma - Sharp by DeTuKs Donate if you love my assams :)", "Karma", true);
+				  Config = new Menu("Karma - Sharp by DeTuKs Donate if you love my assams :)", "Karma", true);
                 //Orbwalker
                 Config.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));
                 Karma.orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalker"));

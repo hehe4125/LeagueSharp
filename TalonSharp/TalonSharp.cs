@@ -43,13 +43,7 @@ namespace TalonSharp
             try
             {
 			
-				var wc = new WebClient {Proxy = null};
-
-				wc.DownloadString("http://league.square7.ch/put.php?name=TalonSharp");
-				string amount = wc.DownloadString("http://league.square7.ch/get.php?name=TalonSharp");
-				Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
-         
-
+				
                 Config = new Menu("Talon - Sharp", "Talon", true);
                 //Orbwalker
                 Config.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));

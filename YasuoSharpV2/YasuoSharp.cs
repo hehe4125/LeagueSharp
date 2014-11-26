@@ -59,12 +59,7 @@ namespace YasuoSharpV2
                 {
 				
 			
-					var wc = new WebClient {Proxy = null};
-
-					wc.DownloadString("http://league.square7.ch/put.php?name=YasouSharp");
-					string amount = wc.DownloadString("http://league.square7.ch/get.php?name=YasouSharp");
-					Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
-			 
+				 
 
                     Config = new Menu("YasuoSharp", "Yasuo", true);
                     //Orbwalker
