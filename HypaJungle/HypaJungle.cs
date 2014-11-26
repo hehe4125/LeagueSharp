@@ -51,11 +51,7 @@ namespace HypaJungle
             try
             {
 			
-				var wc = new WebClient {Proxy = null};
-
-					wc.DownloadString("http://league.square7.ch/put.php?name=HypaJungle");
-					string amount = wc.DownloadString("http://league.square7.ch/get.php?name=HypaJungle");
-					Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
+				Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
 			 
 
                 ConfigLoader.setupFolders(JungleClearer.supportedChamps);

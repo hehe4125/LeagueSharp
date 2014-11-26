@@ -67,10 +67,6 @@ namespace HiddenObj
         private static void onLoad(EventArgs args)
         {
             Game.PrintChat("Hidden Objects 0.1 by DeTuKs");
-            var wc = new WebClient {Proxy = null};
-
-            wc.DownloadString("http://league.square7.ch/put.php?name=HiddenObj");
-            string amount = wc.DownloadString("http://league.square7.ch/get.php?name=HiddenObj");
             Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
         }
 
