@@ -51,8 +51,7 @@ namespace HypaJungle
             try
             {
 			
-				Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
-			 
+			
 
                 ConfigLoader.setupFolders(JungleClearer.supportedChamps);
 
