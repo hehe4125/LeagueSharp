@@ -51,7 +51,7 @@ namespace HypaJungle
             public float critChancePM = 0;
             public float attackrangePL = 0;
             public float attackrangePM = 0;
-            public int[] hpMultiUp = {6, 12, 18};
+            public int[] hpMultiUp = {5, 11, 17};
             public int[] dmgMultiUp = {10};
 
 
@@ -179,9 +179,11 @@ namespace HypaJungle
         public void onRespawn()
         {
             level = getAvgLevel();
+            Console.WriteLine("Level: "+level);
             foreach (var jungleMinion in Minions)
             {
                 jungleMinion.calcUpdatedStats(level-2);
+                Console.WriteLine(jungleMinion.Name+" hp: "+jungleMinion.UpdatedStats.health+" : "+jungleMinion.UpdatedStats.attackDamage);
             }
         }
 
