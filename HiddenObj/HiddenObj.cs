@@ -67,8 +67,7 @@ namespace HiddenObj
         private static void onLoad(EventArgs args)
         {
             Game.PrintChat("Hidden Objects 0.1 by DeTuKs");
-            Game.PrintChat("[Assembly] Loaded "+Convert.ToInt32(amount)+" times by LeagueSharp Users.");
-        }
+		}
 
         private static void onDraw(EventArgs args)
         {
