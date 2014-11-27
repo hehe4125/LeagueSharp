@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
@@ -52,6 +51,7 @@ namespace JayceSharpV2
             Jayce.setSkillShots();
             try
             {
+
                 Config = new Menu("Jayce - Sharp", "Jayce", true);
                 //Orbwalker
                 Config.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));
@@ -93,7 +93,7 @@ namespace JayceSharpV2
 
                 Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
                 AntiGapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
-                Interrupter.OnPosibleToInterrupt += OnPosibleToInterrupt;
+                Interrupter.OnPossibleToInterrupt += OnPosibleToInterrupt;
 
             }
             catch
