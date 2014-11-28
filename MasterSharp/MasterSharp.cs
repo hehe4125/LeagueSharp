@@ -56,6 +56,8 @@ namespace MasterSharp
             MasterYi.setSkillShots();
             try
             {
+                TargetedSkills.setUpSkills();
+
                 Config = new Menu("MasterYi - Sharp", "MasterYi", true);
                 var orbwalkerMenu = new Menu("LX Orbwalker", "my_Orbwalker");
                 LXOrbwalker.AddToMenu(orbwalkerMenu);
@@ -87,6 +89,7 @@ namespace MasterSharp
                 //Debug
                 Config.AddSubMenu(new Menu("Drawing", "draw"));
                 Config.SubMenu("draw").AddItem(new MenuItem("drawCir", "Draw circles")).SetValue(true);
+                Config.SubMenu("draw").AddItem(new MenuItem("debugOn", "Debug stuff")).SetValue(new KeyBind('A', KeyBindType.Press));
 
                 Config.AddToMainMenu();
                 Drawing.OnDraw += onDraw;
@@ -98,13 +101,21 @@ namespace MasterSharp
                 SkillshotDetector.OnDetectSkillshot += OnDetectSkillshot;
                 SkillshotDetector.OnDeleteMissile += OnDeleteMissile;
                 Game.OnGameProcessPacket += OnGameProcessPacket;
-                
+                CustomEvents.Unit.OnDash += onDash;
             }
             catch
             {
                 Game.PrintChat("Oops. Something went wrong with Jayce - Sharp");
             }
 
+        }
+
+        private static void onDash(Obj_AI_Base sender, Dash.DashItem args)
+        {
+            if (MasterYi.selectedTarget != null && sender.NetworkId == MasterYi.selectedTarget.NetworkId &&
+                MasterYi.Q.IsReady() && LXOrbwalker.CurrentMode == LXOrbwalker.Mode.Combo
+                && sender.Distance(MasterYi.player)<=600)
+                MasterYi.Q.Cast(sender);
         }
 
         public static void OnGameProcessPacket(GamePacketEventArgs args)
@@ -133,15 +144,15 @@ namespace MasterSharp
                 if (MasterYi.player.NetworkId != dmg.SourceNetworkId && MasterYi.player.NetworkId == targetID)
                     return;
                 Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
-                if ((int) dmg.Type == 12 || (int) dmg.Type == 4 || (int) dmg.Type == 3 || (int) dmg.Type == 36 ||
-                    (int) dmg.Type == 11)
+                if ((int) dmg.Type == 12 || (int) dmg.Type == 4 || (int) dmg.Type == 3 )
                 {
-                    MasterYi.W.Cast(targ.Position);
+                    if (MasterYi.W.IsReady())
+                    {
+                        MasterYi.W.Cast(targ.Position);
+                       // LXOrbwalker.ResetAutoAttackTimer();
+                    }
                 }
-                else
-                {
                     Console.WriteLine("dtyoe: " + dType);
-                }
             }
         }
 
@@ -245,6 +256,14 @@ namespace MasterSharp
 
         private static void OnGameUpdate(EventArgs args)
         {
+
+            if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
+            {
+                foreach (var buf in MasterYi.player.Buffs)
+                {
+                    Console.WriteLine(buf.Name);
+                }
+            }
             if (LXOrbwalker.CurrentMode == LXOrbwalker.Mode.Combo)
             {
                 Obj_AI_Hero target = SimpleTs.GetTarget(MasterYi.Q.IsReady(500)?800:300, SimpleTs.DamageType.Physical);
@@ -262,6 +281,18 @@ namespace MasterSharp
                     MasterYi.evadeSkillShot(skillShot);
                 }
             }
+
+            //anti buferino
+            foreach (var buf in MasterYi.player.Buffs)
+            {
+                if (TargetedSkills.dagerousBuffs.Contains(buf.Name))
+                {
+                    Console.WriteLine("evade buuf");
+                   // if(buf.EndTime-Game.Time<0.2f)
+                        MasterYi.evadeBuff(buf);
+                }
+            }
+
         }
 
         private static void onDraw(EventArgs args)
@@ -277,7 +308,23 @@ namespace MasterSharp
 
         public static void OnProcessSpell(Obj_AI_Base obj, GameObjectProcessSpellCastEventArgs arg)
         {
-           
+            if (arg.Target != null && arg.Target.NetworkId == MasterYi.player.NetworkId)
+            {
+                Console.WriteLine(arg.SData.Name);
+                if (obj is Obj_AI_Hero)
+                {
+
+                    var hero = (Obj_AI_Hero) obj;
+                    var spellSlot = (hero.GetSpellSlot(arg.SData.Name));
+                    TargetedSkills.TargSkill skill = TargetedSkills.targetedSkillsAll.FirstOrDefault(ob => ob.sName == arg.SData.Name);
+                    if (skill != null)
+                    {
+                        Console.WriteLine("Evade: " + arg.SData.Name);
+                        MasterYi.evadeDamage(skill.useQ,skill.useW,arg,skill.delay);
+                    }
+
+                }
+            }
         }
 
 

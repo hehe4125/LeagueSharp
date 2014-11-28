@@ -11,7 +11,7 @@ namespace MasterSharp
     public class LXOrbwalker
     {
 
-        private static readonly string[] AttackResets = { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral" };
+        private static readonly string[] AttackResets = {"meditate", "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral" };
         private static readonly string[] NoAttacks = { "jarvanivcataclysmattack", "monkeykingdoubleattack", "shyvanadoubleattack", "shyvanadoubleattackdragon", "zyragraspingplantattack", "zyragraspingplantattack2", "zyragraspingplantattackfire", "zyragraspingplantattack2fire" };
         private static readonly string[] Attacks = { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "viktorqbuff", "xenzhaothrust2", "xenzhaothrust3" };
 
@@ -322,7 +322,10 @@ namespace MasterSharp
         private static void OnProcessSpell(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs spell)
         {
             if (IsAutoAttackReset(spell.SData.Name) && unit.IsMe)
+            {
+                Console.WriteLine("reset AA");
                 Utility.DelayAction.Add(250, ResetAutoAttackTimer);
+            }
 
             if (!IsAutoAttack(spell.SData.Name))
                 return;
@@ -454,7 +457,7 @@ namespace MasterSharp
 
         public static bool CanAttack()
         {
-            if (_lastAATick <= Environment.TickCount /* && cantMoveTill < Environment.TickCount*/)
+            if (_lastAATick <= Environment.TickCount  && cantMoveTill < Environment.TickCount)
             {
                 return Environment.TickCount + Game.Ping / 2 + 25 >= _lastAATick + MyHero.AttackDelay * 1000 && _attack;
             }
@@ -464,7 +467,7 @@ namespace MasterSharp
         public static bool CanMove()
         {
             var extraWindup = Menu.Item("lxOrbwalker_Misc_ExtraWindUp").GetValue<Slider>().Value;
-            if (_lastAATick <= Environment.TickCount /*&& cantMoveTill < Environment.TickCount*/)
+            if (_lastAATick <= Environment.TickCount && cantMoveTill < Environment.TickCount)
                 return Environment.TickCount + Game.Ping / 2 >= _lastAATick + MyHero.AttackCastDelay * 1000 + extraWindup && _movement;
             return false;
         }
