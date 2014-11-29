@@ -71,6 +71,9 @@ namespace MasterSharp
                 Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
                 Config.SubMenu("combo").AddItem(new MenuItem("comboItems", "Meh everything is fine here")).SetValue(true);
                 Config.SubMenu("combo").AddItem(new MenuItem("comboWreset", "AA reset W")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useQ", "Use Q to gap")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useE", "Use E")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useR", "Use R")).SetValue(true);
 
                 //Extra
                 Config.AddSubMenu(new Menu("Extra Sharp", "extra"));
@@ -146,7 +149,7 @@ namespace MasterSharp
                 Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
                 if ((int) dmg.Type == 12 || (int) dmg.Type == 4 || (int) dmg.Type == 3 )
                 {
-                    if (MasterYi.W.IsReady())
+                    if (MasterYi.W.IsReady() && LXOrbwalker.InAutoAttackRange(targ))
                     {
                         MasterYi.W.Cast(targ.Position);
                        // LXOrbwalker.ResetAutoAttackTimer();
@@ -266,7 +269,7 @@ namespace MasterSharp
             }
             if (LXOrbwalker.CurrentMode == LXOrbwalker.Mode.Combo)
             {
-                Obj_AI_Hero target = SimpleTs.GetTarget(MasterYi.Q.IsReady(500)?800:300, SimpleTs.DamageType.Physical);
+                Obj_AI_Hero target = SimpleTs.GetTarget(800, SimpleTs.DamageType.Physical);
                 LXOrbwalker.ForcedTarget = target;
                 if(target != null)
                     MasterYi.selectedTarget = target;
@@ -285,13 +288,15 @@ namespace MasterSharp
             //anti buferino
             foreach (var buf in MasterYi.player.Buffs)
             {
-                if (TargetedSkills.dagerousBuffs.Contains(buf.Name))
+                TargetedSkills.TargSkill skill = TargetedSkills.dagerousBuffs.FirstOrDefault(ob => ob.sName == buf.Name);
+                if (skill != null)
                 {
-                    Console.WriteLine("evade buuf");
-                   // if(buf.EndTime-Game.Time<0.2f)
-                        MasterYi.evadeBuff(buf);
+                    Console.WriteLine("Evade: " + buf.Name);
+                    MasterYi.evadeBuff(buf,skill);
                 }
+                // if(buf.EndTime-Game.Time<0.2f)
             }
+            
 
         }
 
@@ -301,7 +306,7 @@ namespace MasterSharp
             if (!Config.Item("drawCir").GetValue<bool>())
                 return;
             Utility.DrawCircle(MasterYi.player.Position, 600, Color.Green);
-
+           
         }
 
 

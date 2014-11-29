@@ -52,9 +52,13 @@ namespace MasterSharp
                     sumItems.cast(SummonerItems.ItemIds.BotRK, target);
 
                 }
-                useQSmart(target);
-                useESmart(target);
-                useRSmart(target);
+
+                if(MasterSharp.Config.Item("useQ").GetValue<bool>())
+                    useQSmart(target);
+                if (MasterSharp.Config.Item("useE").GetValue<bool>())
+                    useESmart(target);
+                if (MasterSharp.Config.Item("useR").GetValue<bool>())
+                    useRSmart(target);
             }
             catch (Exception ex)
             {
@@ -89,42 +93,31 @@ namespace MasterSharp
                 R.Cast(MasterSharp.Config.Item("packets").GetValue<bool>());
         }
 
-        public static bool useQSmart(Obj_AI_Base target)
+        public static void useQSmart(Obj_AI_Base target)
         {
             try
             {
-                if (!Q.IsReady())
-                    return false;
-                float trueAARange = player.AttackRange + target.BoundingRadius;
 
-                float dist = player.Distance(target);
-                Vector2 dashPos = new Vector2();
-                if (!target.IsMoving || target.Path.Count() == 0)
-                    return false;
+                if (!Q.IsReady() || target.Path.Count() == 0 || !target.IsMoving)
+                    return;
+                Vector2 nextEnemPath = target.Path[0].To2D();
+                var dist = player.Position.To2D().Distance(target.Position.To2D());
+                var distToNext = nextEnemPath.Distance(player.Position.To2D());
+                if (distToNext <= dist)
+                    return;
+                var msDif = player.MoveSpeed - target.MoveSpeed;
+                if (msDif <= 0 && !LXOrbwalker.InAutoAttackRange(target) && LXOrbwalker.CanAttack())
+                    Q.Cast(target);
 
-                Vector2 tpos = target.Position.To2D();
-                Vector2 path = target.Path[0].To2D() - tpos;
-                path.Normalize();
-                dashPos = tpos + (path * 20);
-                float myMs = player.MoveSpeed;
-                float targ_ms = (target.IsMoving && player.Distance(dashPos) > dist) ? target.MoveSpeed : 0;
-                float msDif = (myMs - targ_ms) == 0 ? 0.0001f : (myMs - targ_ms);
-                float timeToReach = (dist - trueAARange) / msDif;
-                Console.WriteLine("TimeTO reach " + timeToReach);
-                if (dist > trueAARange+50 && dist < 600)
-                {
-                    if (timeToReach > 1.7f || timeToReach < -1.0f)
-                    {
-                        Q.Cast(target, MasterSharp.Config.Item("packets").GetValue<bool>());
-                    }
-                }
+                var reachIn = dist/msDif;
+                if(reachIn>4)
+                    Q.Cast(target);
             }
             catch (Exception)
             {
                 throw;
             }
 
-            return false;
         }
 
         public static bool iAmLow(float lownes = .25f)
@@ -137,10 +130,12 @@ namespace MasterSharp
             return 1+(int)(target.Health/player.GetAutoAttackDamage(target));
         }
 
-        public static void evadeBuff(BuffInstance buf)
+        public static void evadeBuff(BuffInstance buf,TargetedSkills.TargSkill skill)
         {
-            if (Q.IsReady() && buf.EndTime - Game.Time < 0.3f)
+            if (Q.IsReady() && buf.EndTime - Game.Time < skill.delay/1000)
             {
+
+                Console.WriteLine("evade buuf");
                 useQonBest();
             }
             else if (W.IsReady() && !Q.IsReady() && buf.EndTime - Game.Time < 0.4f)

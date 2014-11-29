@@ -36,18 +36,25 @@ namespace MasterSharp
             }
         }
 
+
         public static List<TargSkill> targetedSkillsAll = new List<TargSkill>();
 
-        public static List<String> dagerousBuffs = new List<String>()
-        {
+        public static List<TargSkill> dagerousBuffs = new List<TargSkill>();
+        /*{
             "timebombenemybuff",
-            "karthusfallenonetarget"
-        };
+            "",
+            "NocturneUnspeakableHorror"
+        };*/
 
 
 
         public static void setUpSkills()
         {
+            //Bufs
+            dagerousBuffs.Add(new TargSkill("timebombenemybuff", 1, 1, 1, 300));
+            dagerousBuffs.Add(new TargSkill("karthusfallenonetarget", 1, 1, 1, 300));
+            dagerousBuffs.Add(new TargSkill("NocturneUnspeakableHorror", 1, 0, 1, 500));
+
             // name of spellName, Q use, W use --- 2-prioritize more , 1- prioritize less 0 dont use
             targetedSkillsAll.Add(new TargSkill("SyndraR", 0, 1, 1));
             targetedSkillsAll.Add(new TargSkill("VayneCondemn", 2, 0, 1));
@@ -75,9 +82,10 @@ namespace MasterSharp
             targetedSkillsAll.Add(new TargSkill("missfortunericochetshot", 2, 1, 0));
             targetedSkillsAll.Add(new TargSkill("nautilusgandline", 2, 1, 1));
             targetedSkillsAll.Add(new TargSkill("runeprison", 2, 1, 1));
-            targetedSkillsAll.Add(new TargSkill("goldcardpreattack", 2, 0, 1));
+            targetedSkillsAll.Add(new TargSkill("goldcardpreattack", 2, 0, 1,0));
             targetedSkillsAll.Add(new TargSkill("vir", 2, 1, 1));
             targetedSkillsAll.Add(new TargSkill("zedult", 2, 0, 1));
+           // targetedSkillsAll.Add(new TargSkill("NocturneUnspeakableHorror", 2, 0, 1,0));
         }
 
     }
