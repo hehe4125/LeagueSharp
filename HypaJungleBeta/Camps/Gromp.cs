@@ -22,7 +22,7 @@ namespace HypaJungle.Camps
             };
             SpawnTime = TimeSpan.FromSeconds(115);
             RespawnTimer = TimeSpan.FromSeconds(100);
-            bonusPrioLowLvl = 4;
+            bonusPrioLowLvl = 2;
             bonusPrio = 3;
             onRespawn();
             worthSmiting = true;

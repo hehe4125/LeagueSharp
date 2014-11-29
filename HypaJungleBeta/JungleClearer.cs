@@ -212,11 +212,12 @@ namespace HypaJungle
                     player.IssueOrder(GameObjectOrder.MoveTo, player.Position + stopRecPos);
                 }
 
-                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach && recalCasted)
+                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach)
                 {
                     if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
                     {
                         jungler.recall.Cast();
+                        recalCasted = true;
                     }
                 }
                 else

@@ -60,12 +60,24 @@ namespace MasterSharp
             targetedSkillsAll.Add(new TargSkill("NullLance", 2, 1, 0));
             targetedSkillsAll.Add(new TargSkill("FiddlesticksDarkWind", 2, 1, 0));
             targetedSkillsAll.Add(new TargSkill("CaitlynHeadshotMissile", 2, 1, 1));
-            targetedSkillsAll.Add(new TargSkill("BrandWildfire", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("BrandWildfire", 2, 1, 1,150));
             targetedSkillsAll.Add(new TargSkill("Disintegrate", 2, 1, 0));
             targetedSkillsAll.Add(new TargSkill("Frostbite", 2, 1, 0));
             targetedSkillsAll.Add(new TargSkill("AkaliMota", 2, 1, 0));
             //infiniteduresschannel  InfiniteDuress
             targetedSkillsAll.Add(new TargSkill("InfiniteDuress", 2, 0, 1,0));
+            targetedSkillsAll.Add(new TargSkill("PantheonW", 2, 0, 1));
+            targetedSkillsAll.Add(new TargSkill("blindingdart", 2, 0, 1));
+            targetedSkillsAll.Add(new TargSkill("JayceToTheSkies", 2, 1, 0));
+            targetedSkillsAll.Add(new TargSkill("dariusexecute", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("ireliaequilibriumstrike", 2, 0, 1));
+            targetedSkillsAll.Add(new TargSkill("maokaiunstablegrowth", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("missfortunericochetshot", 2, 1, 0));
+            targetedSkillsAll.Add(new TargSkill("nautilusgandline", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("runeprison", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("goldcardpreattack", 2, 0, 1));
+            targetedSkillsAll.Add(new TargSkill("vir", 2, 1, 1));
+            targetedSkillsAll.Add(new TargSkill("zedult", 2, 0, 1));
         }
 
     }
