@@ -85,7 +85,7 @@ namespace HypaJungle
             if (player.IsDead)
             {
                 jcState = JungleCleanState.RecallForHeal;
-                Console.WriteLine("RecallForHeal");
+                //Console.WriteLine("RecallForHeal");
                 return;
             }
 
@@ -94,6 +94,10 @@ namespace HypaJungle
                 focusedCamp = getBestCampToGo();
                 if (focusedCamp != null)
                 {
+                    Console.WriteLine("New camp found "+focusedCamp);
+                    Console.WriteLine("Time to finish camp " + focusedCamp.timeToKill);
+                    Console.WriteLine("HP left after camp " + focusedCamp.hpLeftAfterFight);
+                    Console.WriteLine("Camp level " + focusedCamp.level);
                     //puss out or kill?
                     if ( (focusedCamp.willKillMe  || (focusedCamp.priority>25 && player.Health/player.MaxHealth<0.85f)))
                     {

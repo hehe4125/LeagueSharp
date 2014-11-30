@@ -151,17 +151,16 @@ namespace HypaJungle
                 else
                 {
                     //if (minion.Health / getDPS(minion) > ((!HypaJungle.jTimer.jungleCamps.Where(cp => cp.isBuff).Any()) ? 8 : 5) * (player.Health / player.MaxHealth) || (JungleClearer.focusedCamp.isBuff && minion.MaxHealth >= 1400))
-                    doSmite(minion.unit);
+                    if(minion.unit.Health>getSmiteDmg()*0.70f)
+                        doSmite(minion.unit);
                 }
             }
-
-
             attackMinion(minion.unit,smite);
         }
 
         public void usePots()
         {
-            if (player.Health / player.MaxHealth <= 0.6f && !player.HasBuff("Health Potion"))
+            if (player.Health / player.MaxHealth <= 0.4f && !player.HasBuff("Health Potion"))
                 CastPotion(PotionType.Health);
 
             // Mana Potion

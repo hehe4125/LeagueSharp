@@ -77,11 +77,11 @@ namespace HypaJungle
             Camp.JungleMinion minHpMin = campFighting.Minions.OrderBy(cp => cp.UpdatedStats.health).First();
             Camp.JungleMinion maxHpMin = campFighting.Minions.OrderByDescending(cp => cp.UpdatedStats.health).First();
             smite = getSmiteCd(campFighting.timeToCamp) == 0 && smite;
-            Console.WriteLine("Smite: " + smite + " dmg: " + heroFigher.getSmiteDmg());
+           // Console.WriteLine("Smite: " + smite + " dmg: " + heroFigher.getSmiteDmg());
             float maxMinHp = maxHpMin.UpdatedStats.health - ((smite) ? (heroFigher.getSmiteDmg() / 2) : 0); ;
             float minMinHp = minHpMin.UpdatedStats.health - ((smite && aoeSmite)?(heroFigher.getSmiteDmg()/2):0);
 
-            Console.WriteLine("Fighting: " + campFighting.ToString());
+            //Console.WriteLine("Fighting: " + campFighting.ToString());
 
             float timeToKillMin = heroFigher.getTimeToDoDmgAoe(minHpMin, minMinHp, (campFighting.timeToCamp - 3) < 0 ? 0 : campFighting.timeToCamp - 3);
             float timeToKillMax = heroFigher.getTimeToDoDmg(maxHpMin, maxMinHp, (campFighting.timeToCamp - 3) < 0 ? 0 : campFighting.timeToCamp - 3);
@@ -92,8 +92,8 @@ namespace HypaJungle
 
             float timeToKillCamp = 0;
 
-            Console.WriteLine("timeToKillMin " + timeToKillMin);
-            Console.WriteLine("timeToKillMax " + timeToKillMax);
+           // Console.WriteLine("timeToKillMin " + timeToKillMin);
+            //Console.WriteLine("timeToKillMax " + timeToKillMax);
 
 
             if (campFighting.aliveMinCount() == 1)
@@ -107,7 +107,7 @@ namespace HypaJungle
                 //Good aoe
                 if (timeToKillMin < timeToKillMax)
                 {
-                    Console.WriteLine("Aeo better: " + timeToKillMin);
+                   // Console.WriteLine("Aeo better: " + timeToKillMin);
                     float restTimeToKill = timeToKillMax - timeToKillMin;
                     fullDmgDoneToMe += fullCampDps*timeToKillMin;
 
@@ -127,12 +127,12 @@ namespace HypaJungle
                 }
 
             }
-            Console.WriteLine("TimeTOfinish: " + timeToKillCamp);
+           // Console.WriteLine("TimeTOfinish: " + timeToKillCamp);
             float myHpTillThere = heroFigher.getFulHeal((campFighting.timeToCamp - 3) < 0 ? 0 : campFighting.timeToCamp - 3, timeToKillCamp) ;
 
             float relDmgToMe = heroFigher.realPhysDmgDoneToMe(fullDmgDoneToMe);
 
-            Console.WriteLine("HpLeft: " + (myHpTillThere + Jungler.player.Health - relDmgToMe) + " will heal:" + myHpTillThere);
+           // Console.WriteLine("HpLeft: " + (myHpTillThere + Jungler.player.Health - relDmgToMe) + " will heal:" + myHpTillThere);
 
             hpLeftAfter = (myHpTillThere + Jungler.player.Health  - relDmgToMe);
             timeToKill = timeToKillCamp;
@@ -141,7 +141,7 @@ namespace HypaJungle
             {
                 AroundFight(campFighting, true, aoeSmite);
                 campFighting.forceSmite = true;
-                Console.WriteLine("force smite!!!!");
+              //  Console.WriteLine("force smite!!!!");
             }
             //Update camp
             campFighting.willKillMe = hpLeftAfter < 250;
