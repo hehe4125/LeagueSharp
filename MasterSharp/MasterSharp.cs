@@ -74,6 +74,7 @@ namespace MasterSharp
                 Config.SubMenu("combo").AddItem(new MenuItem("useQ", "Use Q to gap")).SetValue(true);
                 Config.SubMenu("combo").AddItem(new MenuItem("useE", "Use E")).SetValue(true);
                 Config.SubMenu("combo").AddItem(new MenuItem("useR", "Use R")).SetValue(true);
+                Config.SubMenu("combo").AddItem(new MenuItem("useSmite", "Use Smite")).SetValue(true);
 
                 //Extra
                 Config.AddSubMenu(new Menu("Extra Sharp", "extra"));
@@ -291,7 +292,7 @@ namespace MasterSharp
                 TargetedSkills.TargSkill skill = TargetedSkills.dagerousBuffs.FirstOrDefault(ob => ob.sName == buf.Name);
                 if (skill != null)
                 {
-                    Console.WriteLine("Evade: " + buf.Name);
+                   // Console.WriteLine("Evade: " + buf.Name);
                     MasterYi.evadeBuff(buf,skill);
                 }
                 // if(buf.EndTime-Game.Time<0.2f)

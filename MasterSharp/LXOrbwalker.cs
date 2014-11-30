@@ -96,6 +96,7 @@ namespace MasterSharp
                 modeCombo.AddItem(new MenuItem("Combo_Key", "Key").SetValue(new KeyBind(32, KeyBindType.Press)));
                 modeCombo.AddItem(new MenuItem("Combo_move", "Movement").SetValue(true));
                 modeCombo.AddItem(new MenuItem("Combo_attack", "Attack").SetValue(true));
+                modeCombo.AddItem(new MenuItem("Move_target", "Move to target").SetValue(true));
                 menuModes.AddSubMenu(modeCombo);
 
                 var modeHarass = new Menu("Harass", "lxOrbwalker_Modes_Harass");
@@ -157,7 +158,17 @@ namespace MasterSharp
             if (CurrentMode == Mode.None  || MenuGUI.IsChatOpen)
                 return;
             var target = GetPossibleTarget();
-            Orbwalk(Game.CursorPos, target);
+            if (Menu.Item("Move_target").GetValue<bool>() && target != null)
+            {
+                if(target.Path.Count()==0)
+                    Orbwalk(target.Position, target);
+                else
+                    Orbwalk(target.Position.To2D().Extend(target.Path[0].To2D(),140).To3D(), target);
+            }
+            else
+            {
+                Orbwalk(Game.CursorPos, target);
+            }
         }
 
         public static void Orbwalk(Vector3 goalPosition, Obj_AI_Base target)

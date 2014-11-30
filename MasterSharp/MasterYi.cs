@@ -27,13 +27,26 @@ namespace MasterSharp
         public static Spell R = new Spell(SpellSlot.R, 0);
 
 
+        public static SpellSlot smite = SpellSlot.Unknown;
+
+
         public static Obj_AI_Base selectedTarget = null;
 
         public static void setSkillShots()
         {
-
+            setupSmite();
         }
-
+        public static void setupSmite()
+        {
+            if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
+            {
+                smite = SpellSlot.Summoner1;
+            }
+            else if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
+            {
+                smite = SpellSlot.Summoner2;
+            }
+        }
 
         public static void slayMaderDuker(Obj_AI_Base target)
         {
@@ -41,7 +54,8 @@ namespace MasterSharp
             {
                 if (target == null)
                     return;
-
+                if(MasterSharp.Config.Item("useSmite").GetValue<bool>())
+                    useSmiteOnTarget(target);
                 useHydra(target);
                 if (target.Distance(player) < 500)
                 {
@@ -120,6 +134,17 @@ namespace MasterSharp
 
         }
 
+        public static void useSmiteOnTarget(Obj_AI_Base target)
+        {
+            if (target.Distance(player,true)<=700*700 &&(yiGotItemRange(3714, 3718) || yiGotItemRange(3706, 3710)))
+            {
+                if (player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+                {
+                    player.SummonerSpellbook.CastSpell(smite, target);
+                }
+            }
+        }
+
         public static bool iAmLow(float lownes = .25f)
         {
             return player.Health / player.MaxHealth < lownes;
@@ -132,13 +157,13 @@ namespace MasterSharp
 
         public static void evadeBuff(BuffInstance buf,TargetedSkills.TargSkill skill)
         {
-            if (Q.IsReady() && buf.EndTime - Game.Time < skill.delay/1000)
+            if (Q.IsReady() && jumpEnesAround() != 0 && buf.EndTime - Game.Time < skill.delay / 1000)
             {
 
-                Console.WriteLine("evade buuf");
+                //Console.WriteLine("evade buuf");
                 useQonBest();
             }
-            else if (W.IsReady() && !Q.IsReady() && buf.EndTime - Game.Time < 0.4f)
+            else if (W.IsReady() && (!Q.IsReady() || jumpEnesAround() != 0 )&& buf.EndTime - Game.Time < 0.4f)
             {
                 var dontMove = 400;
                 LXOrbwalker.cantMoveTill = Environment.TickCount + (int)dontMove;
@@ -150,7 +175,7 @@ namespace MasterSharp
 
         public static void evadeDamage(int useQ, int useW,GameObjectProcessSpellCastEventArgs psCast,int delay = 250)
         {
-            if (useQ != 0 && Q.IsReady())
+            if (useQ != 0 && Q.IsReady() && jumpEnesAround() != 0)
             {
                 if (delay != 0)
                     Utility.DelayAction.Add(delay, useQonBest);
@@ -167,16 +192,22 @@ namespace MasterSharp
 
         }
 
+        public static int jumpEnesAround()
+        {
+
+            return ObjectManager.Get<Obj_AI_Base>().Count(ob => ob.IsEnemy && !(ob is FollowerObject) && (ob is Obj_AI_Minion || ob is Obj_AI_Hero) &&
+                                                                ob.Distance(player) < 600 && !ob.IsDead);
+        }
+
         public static void evadeSkillShot(Skillshot sShot)
         {
             var sd = SpellDatabase.GetByMissileName(sShot.SpellData.MissileSpellName);
             if (LXOrbwalker.CurrentMode == LXOrbwalker.Mode.Combo && (MasterSharp.skillShotMustBeEvaded(sd.MenuItemName) || MasterSharp.skillShotMustBeEvadedW(sd.MenuItemName)))
             {
-                Console.WriteLine("awjfawegsegse34263476346");
                 float spellDamage = (float)sShot.Unit.GetSpellDamage(player, sd.SpellName);
                 int procHp = (int)((spellDamage / player.MaxHealth) * 100);
                 bool willKill = player.Health <= spellDamage;
-                if (Q.IsReady() && (MasterSharp.skillShotMustBeEvaded(sd.MenuItemName)) || willKill)
+                if (Q.IsReady() && jumpEnesAround() != 0 && (MasterSharp.skillShotMustBeEvaded(sd.MenuItemName)) || willKill)
                 {
                     useQonBest();
                 }
@@ -191,7 +222,7 @@ namespace MasterSharp
             {
                 float spellDamage = (float)sShot.Unit.GetSpellDamage(player, sd.SpellName);
                 bool willKill = player.Health <= spellDamage;
-                if (Q.IsReady() && (MasterSharp.skillShotMustBeEvadedAllways(sd.MenuItemName) || willKill))
+                if (Q.IsReady() && jumpEnesAround() != 0 && (MasterSharp.skillShotMustBeEvadedAllways(sd.MenuItemName) || willKill))
                 {
                     useQonBest();
                     return;
@@ -265,6 +296,9 @@ namespace MasterSharp
             }
         }
 
-
+        public static bool yiGotItemRange(int from, int to)
+        {
+            return player.InventoryItems.Any(item => (int)item.Id >= @from && (int)item.Id <= to);
+        }
     }
 }
