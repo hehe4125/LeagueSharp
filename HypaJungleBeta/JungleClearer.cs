@@ -454,7 +454,7 @@ namespace HypaJungle
                 priority += 777;
             }
 
-            Console.WriteLine("emm time?? " + camp.distToCamp/player.MoveSpeed);
+            //Console.WriteLine("emm time?? " + camp.distToCamp/player.MoveSpeed);
 
             if (camp.isBuff)
                 priority -= jungler.buffPriority;

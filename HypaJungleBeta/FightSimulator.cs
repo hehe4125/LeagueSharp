@@ -146,7 +146,7 @@ namespace HypaJungle
             //Update camp
             campFighting.willKillMe = hpLeftAfter < 250;
             campFighting.hpLeftAfterFight = hpLeftAfter;
-            campFighting.timeToCamp = timeToKill;
+            campFighting.timeToKill = timeToKill;
 
             return hpLeftAfter > 250;
         }

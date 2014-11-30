@@ -51,12 +51,6 @@ namespace HypaJungle
                 },
                 new ItemToShop()
                 {
-                    goldReach = 700,
-                    itemsMustHave = new List<int>{1042,1042},
-                    itemIds = new List<int>{3718}
-                },
-                new ItemToShop()
-                {
                     goldReach = 600,
                     itemsMustHave = new List<int>{1042,1042,3715},
                     itemIds = new List<int>{3718}

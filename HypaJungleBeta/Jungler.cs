@@ -374,13 +374,13 @@ namespace HypaJungle
             {
                 regenPerSek += 7;
             }
-            Console.WriteLine("Bonus heal: " + regenPerSek);
+            //Console.WriteLine("Bonus heal: " + regenPerSek);
             return regenPerSek;
         }
 
         public float getFulHeal(float inTime, float killtime)
         {
-            Console.WriteLine("Will heal till it " + canHeal(inTime, killtime));
+            //Console.WriteLine("Will heal till it " + canHeal(inTime, killtime));
             return canHeal(inTime, killtime) + bonusRegenInFight()*killtime;
 
         }
