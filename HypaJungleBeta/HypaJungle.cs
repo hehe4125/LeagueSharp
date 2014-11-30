@@ -70,6 +70,7 @@ namespace HypaJungle
               //  Config.SubMenu("junglerCon").AddItem(new MenuItem("fileConfigHypa", "")).SetValue(ConfigLoader.getChampionConfigs(player.ChampionName));
                 Config.AddSubMenu(new Menu("Jungler", "jungler"));
                 Config.SubMenu("jungler").AddItem(new MenuItem("doJungle", "Do jungle")).SetValue(new KeyBind('J', KeyBindType.Toggle));
+                Config.SubMenu("jungler").AddItem(new MenuItem("stopJungle", "Stop when press(combo)")).SetValue(new KeyBind(32, KeyBindType.Press));
                 Config.SubMenu("jungler").AddItem(new MenuItem("skipSpawn", "Debug skip")).SetValue(new KeyBind('G', KeyBindType.Press));
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoLVL", "Auto Level")).SetValue(true);
                 Config.SubMenu("jungler").AddItem(new MenuItem("autoBuy", "Auto Buy")).SetValue(true);
@@ -194,6 +195,7 @@ namespace HypaJungle
                 }
             }
 
+
             if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
             {
                /* foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(player))
@@ -243,7 +245,7 @@ namespace HypaJungle
                
 
             }
-            if (Config.Item("doJungle").GetValue<KeyBind>().Active) //fullDMG
+            if (Config.Item("doJungle").GetValue<KeyBind>().Active && !Config.Item("stopJungle").GetValue<KeyBind>().Active) //fullDMG
             {
                 try
                 {

@@ -141,6 +141,8 @@ namespace HypaJungle
         public TimeSpan SpawnTime { get; set; }
         public TimeSpan RespawnTimer { get; set; }
         public Vector3 campPosition { get; set; }
+        public bool useSafe = false;
+        public Vector3 safePosition { get; set; }
         public List<JungleMinion> Minions { get; set; }
         public JungleCampState State { get; set; }
         public float ClearTick { get; set; }
@@ -203,6 +205,16 @@ namespace HypaJungle
         public int aliveMinCount()
         {
             return Minions.Count(min => min.unit != null && !min.unit.IsDead);
+        }
+
+        public int visibleMinCount()
+        {
+            return Minions.Count(min => min.unit != null && !min.unit.IsDead && min.unit.IsVisible);
+        }
+
+        public int inAARangeMinCount()
+        {
+            return Minions.Count(min => min.unit != null && !min.unit.IsDead && min.unit.IsVisible && JungleOrbwalker.InAutoAttackRange(min.unit));
         }
 
 

@@ -23,7 +23,7 @@ namespace HypaJungle
             ThinkAfterFinishCamp
         }
 
-        public static List<String> supportedChamps = new List<string> { "MasterYi",  "Warwick" }; 
+        public static List<String> supportedChamps = new List<string> { "MasterYi", "Warwick", "Twitch" }; 
 
 
         public static Obj_AI_Hero player = ObjectManager.Player;
@@ -53,7 +53,10 @@ namespace HypaJungle
                     jungler = new Warwick();
                     Game.PrintChat("Warwick loaded");
                     break;
-                
+                case ("twitch"):
+                    jungler = new Twitch();
+                    Game.PrintChat("Twitch loaded");
+                    break;
                 /*case "udyr":
                     jungler = new Udyr();
                     Game.PrintChat("Udyr loaded");
@@ -94,6 +97,16 @@ namespace HypaJungle
                 focusedCamp = getBestCampToGo();
                 if (focusedCamp != null)
                 {
+                    if (focusedCamp.priority >= 20)
+                    {
+                        GamePacket gPacketT;
+                        gPacketT = Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(player.Position[0], player.Position[1], 0, 0, Packet.PingType.Normal));
+                        gPacketT.Process();
+
+                        gPacketT = Packet.S2C.Ping.Encoded(new Packet.S2C.Ping.Struct(player.Position[0], player.Position[1], 0, 0, Packet.PingType.Fallback));
+                        gPacketT.Process();
+                    }
+
                     Console.WriteLine("New camp found "+focusedCamp);
                     Console.WriteLine("Time to finish camp " + focusedCamp.timeToKill);
                     Console.WriteLine("HP left after camp " + focusedCamp.hpLeftAfterFight);
@@ -145,6 +158,8 @@ namespace HypaJungle
             if (jcState == JungleCleanState.AttackingMinions)
             {
                 attackCampMinions();
+                if (focusedCamp.inAARangeMinCount() == 0)
+                    player.IssueOrder(GameObjectOrder.MoveTo, focusedCamp.campPosition);
             }
 
             if (jcState == JungleCleanState.AttackingMinions && isCampFinished())

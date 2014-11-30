@@ -23,7 +23,7 @@ namespace HypaJungle
 
         public static void attackMinion(Obj_AI_Base target, Vector3 moveTo)
         {
-            if (target != null && CanAttack())
+            if (target != null && CanAttack() && InAutoAttackRange(target))
             {
                 if (player.IssueOrder(GameObjectOrder.AttackUnit, target))
                     _lastAATick = Environment.TickCount + Game.Ping / 2;
@@ -37,6 +37,14 @@ namespace HypaJungle
                 return Environment.TickCount + Game.Ping / 2 + 25 + inMS >= _lastAATick + player.AttackDelay * 1000 + 130;
             }
             return false;
+        }
+
+        public static bool InAutoAttackRange(Obj_AI_Base target)
+        {
+            if (target == null)
+                return false;
+            var myRange = GetAutoAttackRange(player, target);
+            return Vector2.DistanceSquared(target.ServerPosition.To2D(), player.ServerPosition.To2D()) <= myRange * myRange;
         }
 
 
@@ -57,7 +65,7 @@ namespace HypaJungle
                 return;
             _lastMovement = Environment.TickCount;
 
-            if (!CanMove())
+            if (!CanMove() || CanAttack())
                 return;
             if (player.Position.Distance(position)>50)
                 player.IssueOrder(GameObjectOrder.MoveTo, position);
