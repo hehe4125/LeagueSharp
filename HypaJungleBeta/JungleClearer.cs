@@ -23,7 +23,7 @@ namespace HypaJungle
             ThinkAfterFinishCamp
         }
 
-        public static List<String> supportedChamps = new List<string> { "MasterYi", "Udyr", "Warwick", "Shyvana", "LeeSin", "Amumu", "Rengar" }; 
+        public static List<String> supportedChamps = new List<string> { "MasterYi",  "Warwick" }; 
 
 
         public static Obj_AI_Hero player = ObjectManager.Player;
@@ -49,12 +49,12 @@ namespace HypaJungle
                     jungler = new MasterYi();
                     Game.PrintChat("MasterYi loaded");
                     break;
-               /* case("warwick"):
+                case("warwick"):
                     jungler = new Warwick();
                     Game.PrintChat("Warwick loaded");
                     break;
                 
-                case "udyr":
+                /*case "udyr":
                     jungler = new Udyr();
                     Game.PrintChat("Udyr loaded");
                     break;
@@ -216,7 +216,7 @@ namespace HypaJungle
                     player.IssueOrder(GameObjectOrder.MoveTo, player.Position + stopRecPos);
                 }
 
-                if (jungler.nextItem != null && player.GoldCurrent >= jungler.nextItem.goldReach)
+                if (jungler.nextItem != null && player.GoldCurrent-12 >= jungler.nextItem.goldReach)
                 {
                     if (jungler.recall.IsReady() && !player.IsChanneling && !jungler.inSpwan() && !recalCasted)
                     {
@@ -227,7 +227,7 @@ namespace HypaJungle
                 else
                 {
                     if (jungler.inSpwan() && player.Health > player.MaxHealth*0.8f &&
-                        (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f) && (jungler.nextItem==null))
+                        (!jungler.gotMana || player.Mana > player.MaxMana * 0.8f) && (jungler.nextItem == null || player.GoldCurrent+40 <= jungler.nextItem.goldReach))
                     {
                         jcState = JungleCleanState.SearchingBestCamp;
                         Console.WriteLine("SearchingBestCamp");

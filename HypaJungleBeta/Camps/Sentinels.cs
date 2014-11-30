@@ -21,7 +21,7 @@ namespace HypaJungle.Camps
             {
                 get_SRU_Blue(1),
                 get_SRU_BlueMini(2),
-                get_SRU_BlueMini(3),
+                get_SRU_BlueMini(3,true),
             };
             SpawnTime = TimeSpan.FromSeconds(115);
             RespawnTimer = TimeSpan.FromSeconds(300);
@@ -65,7 +65,7 @@ namespace HypaJungle.Camps
             return SRU_Murkwofl;
         }
 
-        private JungleMinion get_SRU_BlueMini(int count)
+        private JungleMinion get_SRU_BlueMini(int count,bool lolRito = false)
         {
             JunMinStats bStats = new JunMinStats
             {
@@ -82,7 +82,12 @@ namespace HypaJungle.Camps
                 healthPL = 20f,
                 attackDamagePL = 1f
             };
-            JungleMinion SRU_MurkwoflMini = new JungleMinion("SRU_BlueMini" + campId + ".1." + count + "", bStats, ltg, JungleMinion.SmiteBuff.None, JungleMinion.Buff.None);
+            JungleMinion SRU_MurkwoflMini;
+            if(lolRito)
+                SRU_MurkwoflMini = new JungleMinion("SRU_BlueMini2" + campId + ".1." + count + "", bStats, ltg, JungleMinion.SmiteBuff.None, JungleMinion.Buff.None);
+            else
+                SRU_MurkwoflMini = new JungleMinion("SRU_BlueMini" + campId + ".1." + count + "", bStats, ltg, JungleMinion.SmiteBuff.None, JungleMinion.Buff.None);
+            
             return SRU_MurkwoflMini;
         }
     }

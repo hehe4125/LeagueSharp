@@ -91,14 +91,13 @@ namespace HypaJungle
 
 
         public abstract float getDPS(Obj_AI_Minion minion);
-        public abstract float getDPS(Camp camp);
 
         public abstract bool canMove();
         public abstract bool canRecall();
 
         public abstract float canHeal(float inTime, float toKillCamp);
         public abstract float getSkillAoePerSec();
-        public abstract float getDmgDoneInTime(Camp.JungleMinion camp, float time, float cdResetTime);
+      //  public abstract float getDmgDoneInTime(Camp.JungleMinion camp, float time, float cdResetTime);
         public abstract float getAoeDmgDoneInTime(Camp.JungleMinion camp, float time, float cdResetTime);
         public abstract float getTimeToDoDmgAoe(Camp.JungleMinion camp, float damageToDo, float cdResetTime);
         public abstract float getTimeToDoDmg(Camp.JungleMinion camp, float damageToDo, float cdResetTime);

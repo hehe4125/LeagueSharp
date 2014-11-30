@@ -179,19 +179,8 @@ namespace HypaJungle
             return dps;
         }
 
-        public override float getDPS(Camp camp)
-        {
-            float dps = 0;
-            var qDmg = (getSpellDmgRaw(SpellSlot.Q)+50+25*Q.Level);
-            var tillNext = Qdata.Cooldown / (1 + 0.5f * player.AttackSpeedMod);
-          //  Console.WriteLine("tillNext: " + Qdata.Cooldown);
-            dps += qDmg / tillNext;
-            dps += ((player.BaseAttackDamage + player.FlatPhysicalDamageMod)/(1.1f/player.AttackDelay));
-            dpsFix = dps;
-            return dps;
-        }
 
-        public override float getDmgDoneInTime(Camp.JungleMinion camp, float time, float cdResetTime)
+       /* public override float getDmgDoneInTime(Camp.JungleMinion camp, float time, float cdResetTime)
         {
             float damage = 0;
             //Qdmg can deal
@@ -212,7 +201,7 @@ namespace HypaJungle
             damage += camp.UpdatedStats.physicGoesThrough*(player.BaseAttackDamage + player.FlatPhysicalDamageMod)*aaCastsMore;
 
             return damage + time * getItemPassiveBoostDps();
-        }
+        }*/
 
         public override float getTimeToDoDmg(Camp.JungleMinion camp, float damageToDo, float cdResetTime)
         {

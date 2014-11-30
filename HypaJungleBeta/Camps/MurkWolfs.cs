@@ -27,7 +27,7 @@ namespace HypaJungle.Camps
             bonusPrioLowLvl = 3;
             onRespawn();
             worthSmiting = false;
-            useOverTime = false;
+            useOverTime = true;
         }
 
 
