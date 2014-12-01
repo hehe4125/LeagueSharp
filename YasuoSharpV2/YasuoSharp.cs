@@ -8,7 +8,7 @@ using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
-using System.Net;
+
 namespace YasuoSharpV2
 {
         internal class YasuoSharp
@@ -57,9 +57,6 @@ namespace YasuoSharpV2
 
                 try
                 {
-				
-			
-				 
 
                     Config = new Menu("YasuoSharp", "Yasuo", true);
                     //Orbwalker
