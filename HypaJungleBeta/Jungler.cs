@@ -65,6 +65,8 @@ namespace HypaJungle
         public FightSimulator FightSimulator;
 
 
+
+        public int dragOnLvl = 20;
         public float dpsFix = 0;
         public float bonusItemDps = 0;
         public int buffPriority = 7;
@@ -181,6 +183,18 @@ namespace HypaJungle
             catch (Exception)
             {
                 
+            }
+        }
+
+        public void useSmiteOnHero(Obj_AI_Base target)
+        {
+            if (smite != SpellSlot.Unknown && player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+            {
+                if (target.Distance(player, true) <= 700 * 700 && (junglerGotItemRange(3714, 3718) || junglerGotItemRange(3706, 3710)))
+                {
+
+                    player.SummonerSpellbook.CastSpell(smite, target);
+                }
             }
         }
 

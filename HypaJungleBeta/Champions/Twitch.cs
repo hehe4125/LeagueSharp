@@ -16,6 +16,7 @@ namespace HypaJungle
             setUpSpells();
             setUpItems();
             levelUpSeq = new Spell[] { Q, E, E, W, Q, R, Q, Q, Q, E, R, E, E, W, W, R, W };
+            dragOnLvl = 7;
         }
 
         public override void setUpSpells()
@@ -62,6 +63,12 @@ namespace HypaJungle
                     camp.safePosition = new Vector3(7462.053f, 2489.813f, 52.57141f);
                 }
 
+                if (camp.campId == 6)
+                {
+                    camp.useSafe = true;
+                    camp.safePosition = new Vector3(10978.053f, 5454.813f, -69.57141f);
+                }
+
                 if (camp.campId == 7)
                 {
                     camp.useSafe = true;
@@ -71,13 +78,13 @@ namespace HypaJungle
                 if (camp.campId == 8)
                 {
                     camp.useSafe = true;
-                    camp.safePosition = new Vector3(10342.77f, 8896.083f, 51.72742f);
+                    camp.safePosition = new Vector3(11844.77f, 7682.083f, 52.72742f);
                 }
 
                 if (camp.campId == 9)
                 {
                     camp.useSafe = true;
-                    camp.safePosition = new Vector3(7001.741f, 9915.717f, 54.02466f);
+                    camp.safePosition = new Vector3(6881.741f, 9895.717f, 54.02466f);
                 }
 
                 if (camp.campId == 10)
@@ -91,6 +98,12 @@ namespace HypaJungle
                     camp.useSafe = true;
                     camp.safePosition = new Vector3(7368.408f, 12488.37f, 56.47668f);
                 }
+
+                if (camp.campId == 14)
+                {
+                    camp.useSafe = true;
+                    camp.safePosition = new Vector3(12104.408f, 6680.37f, 51.47668f);
+                }
             }
         }
 
@@ -103,7 +116,7 @@ namespace HypaJungle
                 {
                     goldReach = 475,
                     itemsMustHave = new List<int>{},
-                    itemIds = new List<int>{1039,2003,2003,2003}
+                    itemIds = new List<int>{1039,2003,2003,2003,3340}
                 },
                 new ItemToShop()
                 {

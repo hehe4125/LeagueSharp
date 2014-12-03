@@ -23,7 +23,7 @@ namespace HypaJungle
 
         public static void attackMinion(Obj_AI_Base target, Vector3 moveTo)
         {
-            if (target != null && CanAttack() && InAutoAttackRange(target))
+            if (target != null && CanAttack() && (player.IsMelee() || InAutoAttackRange(target)))
             {
                 if (player.IssueOrder(GameObjectOrder.AttackUnit, target))
                     _lastAATick = Environment.TickCount + Game.Ping / 2;

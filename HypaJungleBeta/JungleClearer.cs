@@ -158,7 +158,7 @@ namespace HypaJungle
             if (jcState == JungleCleanState.AttackingMinions)
             {
                 attackCampMinions();
-                if (focusedCamp.inAARangeMinCount() == 0)
+                if (focusedCamp.inAARangeMinCount() == 0 && !player.IsMelee())
                     player.IssueOrder(GameObjectOrder.MoveTo, focusedCamp.campPosition);
             }
 
@@ -347,7 +347,7 @@ namespace HypaJungle
             if (!jungler.gotOverTime || !HypaJungle.Config.Item("getOverTime").GetValue<bool>() || !focusedCamp.useOverTime)
             {
                     Camp.JungleMinion campMinions =
-                   focusedCamp.Minions.Where(min => min != null && min.unit != null && min.unit is Obj_AI_Minion && !min.unit.IsDead)
+                   focusedCamp.Minions.Where(min => min != null && min.unit != null && min.unit is Obj_AI_Minion && !min.unit.IsDead && min.unit.IsVisible)
                        .OrderByDescending(min => (min.unit).MaxHealth).FirstOrDefault();
                     if (campMinions.unit is Obj_AI_Minion)
                         jungler.startAttack(campMinions, focusedCamp.canSmite());
@@ -357,7 +357,7 @@ namespace HypaJungle
             else
             {
                 Camp.JungleMinion campMinions =
-                    focusedCamp.Minions.Where(min => min != null && min.unit != null && min.unit is Obj_AI_Minion && !min.unit.IsDead)
+                    focusedCamp.Minions.Where(min => min != null && min.unit != null && min.unit is Obj_AI_Minion && !min.unit.IsDead && min.unit.IsVisible)
                     .OrderBy(min => minHasOvertime(((Obj_AI_Minion)min.unit))).ThenByDescending(min => (min.unit).MaxHealth)
                         .FirstOrDefault();
                        // .OrderByDescending(min => ((Obj_AI_Minion)min.Unit).MaxHealth).First();
@@ -441,17 +441,24 @@ namespace HypaJungle
             return HypaJungle.jTimer.jungleCamps.OrderBy(camp => camp.priority).FirstOrDefault();
         }
 
+        public static bool canDoDragon()
+        {
+            return player.Level >= jungler.dragOnLvl && player.Health/player.MaxHealth>0.70;
+        }
+
         public static int getPriorityNumber(Camp camp)
         {
-            if (camp.isDragBaron)
+            if (camp.isDrag && !canDoDragon())
                 return 999;
 
-            if (((camp.side != HypaJungle.player.Team)
-                || camp.side != HypaJungle.player.Team) && !HypaJungle.Config.Item("enemyJung").GetValue<bool>())
-                return 999;
+            if (!(canDoDragon() && camp.isDrag))
+            {
+                if (((camp.side != HypaJungle.player.Team)) && !HypaJungle.Config.Item("enemyJung").GetValue<bool>())
+                    return 999;
 
-            if (camp.side == GameObjectTeam.Neutral && !HypaJungle.Config.Item("doCrabs").GetValue<bool>())
-                return 999;
+                if (camp.side == GameObjectTeam.Neutral && !HypaJungle.Config.Item("doCrabs").GetValue<bool>())
+                    return 999;
+            }
 
 
 

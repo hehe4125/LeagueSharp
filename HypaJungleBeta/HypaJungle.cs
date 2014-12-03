@@ -58,6 +58,7 @@ namespace HypaJungle
                     return;
                 }
 
+
                 jTimer = new JungleManager();
 
                 Config = new Menu("HypeJungle", "hype", true);
@@ -196,6 +197,11 @@ namespace HypaJungle
             }
 
 
+            if (Config.Item("stopJungle").GetValue<KeyBind>().Active) //fullDMG
+            {
+                
+            }
+
             if (Config.Item("debugOn").GetValue<KeyBind>().Active) //fullDMG
             {
                /* foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(player))
@@ -213,7 +219,7 @@ namespace HypaJungle
 
                 Console.WriteLine(player.Mana);
                 */
-                Console.WriteLine("Frog Duf fends in: " + JungleClearer.jungler.smiteSpell.IsReady());
+                Console.WriteLine("Frog Duf fends in: " +player.Team);
 
                 JungleClearer.jungler.FightSimulator.AroundFight(new Raptors(5, player.Position, GameObjectTeam.Chaos));
 

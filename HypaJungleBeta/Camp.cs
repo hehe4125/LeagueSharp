@@ -147,7 +147,7 @@ namespace HypaJungle
         public JungleCampState State { get; set; }
         public float ClearTick { get; set; }
         public bool isBuff;
-        public bool isDragBaron;
+        public bool isDrag;
         public byte campId;
         public int bonusPrio = 0;
         public int bonusPrioLowLvl = 0;

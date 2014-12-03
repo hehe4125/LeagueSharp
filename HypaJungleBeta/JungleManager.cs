@@ -39,6 +39,8 @@ namespace HypaJungle
             jungleCamps.Add(new RedBrambleback(4, new Vector3(7772.412f, 4108.053f, 53.867f), GameObjectTeam.Order));
             jungleCamps.Add(new Krugs(5, new Vector3(8404.148f, 2726.269f, 51.2764f), GameObjectTeam.Order));
 
+            jungleCamps.Add(new Dragon(6, new Vector3(9842.148f, 4430.269f, -71.2764f), GameObjectTeam.Neutral));
+
             jungleCamps.Add(new Gromp(14, new Vector3(12770.0f, 6468.0f, 51.84151f), GameObjectTeam.Chaos));
             jungleCamps.Add(new Senitels(7, new Vector3(10938.95f, 7000.918f, 51.8691f), GameObjectTeam.Chaos));
             jungleCamps.Add(new MurkWolfs(8, new Vector3(10972.0f, 8306.0f, 62.5235f), GameObjectTeam.Chaos));
