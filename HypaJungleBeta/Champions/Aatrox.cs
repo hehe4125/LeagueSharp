@@ -20,6 +20,7 @@ namespace HypaJungle
             levelUpSeq = new Spell[] { W,Q,E,W,W,R,W,E,W,E,R,E,E,Q,Q,R,Q,Q};
             buffPriority = 6;
             startCamp = StartCamp.Golems;
+            gotMana = false;
         }
 
         public override void setUpSpells()
