@@ -21,7 +21,7 @@ namespace HypaJungle.Camps
             {
                 get_SRU_Blue(1),
                 get_SRU_BlueMini(2),
-                get_SRU_BlueMini(3,team == GameObjectTeam.Order),
+                get_SRU_BlueMini(3,true),
             };
             SpawnTime = TimeSpan.FromSeconds(115);
             RespawnTimer = TimeSpan.FromSeconds(300);
