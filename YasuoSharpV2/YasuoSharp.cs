@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Evade;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
@@ -366,10 +365,6 @@ namespace YasuoSharpV2
                         }
                     }
 
-                }
-                foreach (var ss in DetectedSkillshots)
-                {
-                    ss.Draw(Color.CadetBlue, Color.Red, 1);
                 }
                 
             

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Evade;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
@@ -203,7 +202,7 @@ namespace YasuoSharpV2
                             return;
                         }
 
-                        if (distToDash < 3f && jumps.Count > 0)
+                        if (distToDash < 3f && jumps.Count > 0 && jumps.First().Distance(Player)<=470)
                         {
                             E.Cast(jumps.First());
                         }
@@ -277,7 +276,7 @@ namespace YasuoSharpV2
             if (YasuoSharp.Config.Item("useEWall").GetValue<bool>())
                 eBehindWall(target);
             Obj_AI_Base goodTarg = canDoEQEasly(target);
-            if (goodTarg != null)
+            if (goodTarg != null && goodTarg.Distance(Player)<=470)
             {
                 E.Cast(goodTarg);
                 Q.Cast(target);
@@ -302,9 +301,10 @@ namespace YasuoSharpV2
             
             if (!isDashigPro)
             {
+                
                 List<Vector2> minionPs = YasMath.GetCastMinionsPredictedPositions(minions, getNewQSpeed()*0.3f, 30f,
                     float.MaxValue, Player.ServerPosition, 465, false, SkillshotType.SkillshotLine);
-                Vector2 clos = Geometry.Closest(Player.ServerPosition.To2D(), minionPs);
+                Vector2 clos = LeagueSharp.Common.Geometry.Closest(Player.ServerPosition.To2D(), minionPs);
                 if (Player.Distance(clos) < 475)
                 {
 
@@ -466,7 +466,7 @@ namespace YasuoSharpV2
                     if (!isDashigPro)
                     {
                         List<Vector2> minionPs = YasMath.GetCastMinionsPredictedPositions(minions, getNewQSpeed() * 0.3f, 30f, float.MaxValue, Player.ServerPosition, 465, false, SkillshotType.SkillshotLine);
-                        Vector2 clos = Geometry.Closest(Player.ServerPosition.To2D(), minionPs);
+                        Vector2 clos = LeagueSharp.Common.Geometry.Closest(Player.ServerPosition.To2D(), minionPs);
                         if (Player.Distance(clos) < 475)
                         {
                             Console.WriteLine("Cast q simp");
@@ -726,7 +726,7 @@ namespace YasuoSharpV2
         {
             //try douge with E if cant windWall
 
-            if (!W.IsReady())
+            if (!W.IsReady() || skillShot.SpellData.Type == SkillShotType.SkillshotCircle || skillShot.SpellData.Type == SkillShotType.SkillshotRing)
                 return;
             if (skillShot.IsAboutToHit(250, Player))
             {
@@ -827,7 +827,7 @@ namespace YasuoSharpV2
 
         public static bool useENormal(Obj_AI_Base target)
         {
-            if (!E.IsReady())
+            if (!E.IsReady() || target.Distance(Player)>470)
                 return false;
             Vector2 posAfter = V2E(Player.Position, target.Position, 475);
             if (!YasuoSharp.Config.Item("djTur").GetValue<bool>())
@@ -842,6 +842,7 @@ namespace YasuoSharpV2
                 Vector2 posAfterE = pPos + (Vector2.Normalize(target.Position.To2D() - pPos) * E.Range);
                 if (!inTowerRange(posAfterE))
                 {
+                    Console.WriteLine("use gap?");
                     if (isSafePoint(posAfter).IsSafe)
                         E.Cast(target, false);
                     return true;
@@ -895,7 +896,7 @@ namespace YasuoSharpV2
                 goesThroughWall(pos.To3D(), Player.Position))
                 return;
             Vector2 bestLoc = pPos + (Vector2.Normalize(pos - pPos) * (Player.MoveSpeed * 0.35f));
-            float bestDist = pos.Distance(bestLoc);
+            float bestDist = pos.Distance(pPos)-50;
             try
             {
                 foreach (Obj_AI_Base enemy in ObjectManager.Get<Obj_AI_Base>().Where(ob => enemyIsJumpable(ob, ignore)))
@@ -912,6 +913,7 @@ namespace YasuoSharpV2
                             bestLoc = posAfterE;
                             bestDist = distE;
                             bestEnem = enemy;
+                           // Console.WriteLine("Gap to best enem");
                         }
                     }
                 }
@@ -922,7 +924,10 @@ namespace YasuoSharpV2
             }
 
             if (bestEnem != null)
+            {
+                Console.WriteLine("should use gap");
                 useENormal(bestEnem);
+            }
 
         }
 
