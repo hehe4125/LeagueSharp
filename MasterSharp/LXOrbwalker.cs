@@ -161,7 +161,7 @@ namespace MasterSharp
             if (Menu.Item("Move_target").GetValue<bool>() && target != null)
             {
                 if(target.Path.Count()==0)
-                    Orbwalk(target.Position, target);
+                    Orbwalk(target.Position.To2D().Extend(target.Direction.To2D(), 140).To3D(), target);
                 else
                     Orbwalk(target.Position.To2D().Extend(target.Path[0].To2D(),140).To3D(), target);
             }
@@ -219,7 +219,7 @@ namespace MasterSharp
             {
                 var point = MyHero.ServerPosition +
                 200 * (position.To2D() - MyHero.ServerPosition.To2D()).Normalized().To3D();
-                MyHero.IssueOrder(GameObjectOrder.MoveTo, point);
+                MyHero.IssueOrder(GameObjectOrder.MoveTo, position);
             }
 
         }

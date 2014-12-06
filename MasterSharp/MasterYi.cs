@@ -56,15 +56,26 @@ namespace MasterSharp
                     return;
                 if(MasterSharp.Config.Item("useSmite").GetValue<bool>())
                     useSmiteOnTarget(target);
-                useHydra(target);
+
                 if (target.Distance(player) < 500)
                 {
                     sumItems.cast(SummonerItems.ItemIds.Ghostblade);
                 }
+                if (target.Distance(player) < 300)
+                {
+                    sumItems.cast(SummonerItems.ItemIds.Hydra);
+                }
+                if (target.Distance(player) < 300)
+                {
+                    sumItems.cast(SummonerItems.ItemIds.Tiamat);
+                }
+                if (target.Distance(player) < 300 )
+                {
+                    sumItems.cast(SummonerItems.ItemIds.Cutlass, target);
+                }
                 if (target.Distance(player) < 500 && (player.Health / player.MaxHealth) * 100 < 85)
                 {
                     sumItems.cast(SummonerItems.ItemIds.BotRK, target);
-
                 }
 
                 if(MasterSharp.Config.Item("useQ").GetValue<bool>())
@@ -80,15 +91,7 @@ namespace MasterSharp
             }
         }
 
-        public static void useHydra(Obj_AI_Base target)
-        {
 
-            if ((Items.CanUseItem(3074) || Items.CanUseItem(3074)) && target.Distance(player.ServerPosition) < (400 + target.BoundingRadius - 20))
-            {
-                Items.UseItem(3074, target);
-                Items.UseItem(3077, target);
-            }
-        }
         public static void useQtoKill(Obj_AI_Base target)
         {
             if (Q.IsReady() && (target.Health <= Q.GetDamage(target) || iAmLow(0.20f)))
@@ -136,10 +139,11 @@ namespace MasterSharp
 
         public static void useSmiteOnTarget(Obj_AI_Base target)
         {
-            if (target.Distance(player,true)<=700*700 &&(yiGotItemRange(3714, 3718) || yiGotItemRange(3706, 3710)))
+            if (smite != SpellSlot.Unknown && player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
             {
-                if (player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+                if (target.Distance(player,true)<=700*700 &&(yiGotItemRange(3714, 3718) || yiGotItemRange(3706, 3710)))
                 {
+               
                     player.SummonerSpellbook.CastSpell(smite, target);
                 }
             }
@@ -246,7 +250,7 @@ namespace MasterSharp
             {
                 if (!Q.IsReady())
                 {
-                    Console.WriteLine("Fuk uo here ");
+                    //Console.WriteLine("Fuk uo here ");
                     return;
                 }
                 if (selectedTarget != null)
@@ -254,7 +258,7 @@ namespace MasterSharp
 
                     if (selectedTarget.Distance(player) < 600)
                     {
-                        Console.WriteLine("Q on targ ");
+                       // Console.WriteLine("Q on targ ");
                         Q.Cast(selectedTarget, MasterSharp.Config.Item("packets").GetValue<bool>());
                         return;
                     }
@@ -266,7 +270,7 @@ namespace MasterSharp
                                     ob.IsEnemy && (ob is Obj_AI_Minion || ob is Obj_AI_Hero) &&
                                     ob.Distance(player) < 600 && !ob.IsDead)
                             .OrderBy(ob => ob.Distance(selectedTarget, true)).FirstOrDefault();
-                    Console.WriteLine("do shit? " + bestOther.Name);
+                    //Console.WriteLine("do shit? " + bestOther.Name);
 
                     if (bestOther != null)
                     {
@@ -282,7 +286,7 @@ namespace MasterSharp
                                     ob.IsEnemy && !(ob is FollowerObject)  && (ob is Obj_AI_Minion || ob is Obj_AI_Hero) &&
                                     ob.Distance(player) < 600 && !ob.IsDead)
                             .OrderBy(ob => ob.Distance(Game.CursorPos, true)).FirstOrDefault();
-                    Console.WriteLine("do shit? " + bestOther.Name);
+                    //Console.WriteLine("do shit? " + bestOther.Name);
 
                     if (bestOther != null)
                     {

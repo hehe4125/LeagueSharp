@@ -156,7 +156,7 @@ namespace MasterSharp
                        // LXOrbwalker.ResetAutoAttackTimer();
                     }
                 }
-                    Console.WriteLine("dtyoe: " + dType);
+                   // Console.WriteLine("dtyoe: " + dType);
             }
         }
 
@@ -316,7 +316,7 @@ namespace MasterSharp
         {
             if (arg.Target != null && arg.Target.NetworkId == MasterYi.player.NetworkId)
             {
-                Console.WriteLine(arg.SData.Name);
+                //Console.WriteLine(arg.SData.Name);
                 if (obj is Obj_AI_Hero)
                 {
 
@@ -325,7 +325,7 @@ namespace MasterSharp
                     TargetedSkills.TargSkill skill = TargetedSkills.targetedSkillsAll.FirstOrDefault(ob => ob.sName == arg.SData.Name);
                     if (skill != null)
                     {
-                        Console.WriteLine("Evade: " + arg.SData.Name);
+                        //Console.WriteLine("Evade: " + arg.SData.Name);
                         MasterYi.evadeDamage(skill.useQ,skill.useW,arg,skill.delay);
                     }
 
