@@ -225,7 +225,7 @@ namespace HypaJungle
                     Console.WriteLine(spell.Name.ToLower());
                 }
 
-                foreach (SpellDataInst spell in player.SummonerSpellbook.Spells)
+                foreach (SpellDataInst spell in player.Spellbook.Spells)
                 {
                     Console.WriteLine(spell.Name.ToLower()+"  "+spell.Slot);
                 }*/

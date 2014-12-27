@@ -103,12 +103,12 @@ namespace HypaJungle
 
         public void setupSmite()
         {
-            if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
+            if (player.Spellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
             {
                 smite = SpellSlot.Summoner1;
                 smiteSpell = new Spell(smite);
             }
-            else if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
+            else if (player.Spellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
             {
                 smite = SpellSlot.Summoner2;
                 smiteSpell = new Spell(smite);
@@ -117,9 +117,9 @@ namespace HypaJungle
 
         private void doSmite(Obj_AI_Base target)
         {
-            if (player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+            if (player.Spellbook.CanUseSpell(smite) == SpellState.Ready)
             {
-                player.SummonerSpellbook.CastSpell(smite, target);
+                player.Spellbook.CastSpell(smite, target);
             }
         }
 
@@ -166,10 +166,10 @@ namespace HypaJungle
         {
             try
             {
-                player.InventoryItems.First(
+                player.Spellbook.CastSpell(player.InventoryItems.First(
                     item =>
                         item.Id == (type == PotionType.Health ? (ItemId) 2003 : (ItemId) 2004) ||
-                        (item.Id == (ItemId) 2010) || (item.Id == (ItemId) 2041 && item.Charges > 0)).UseItem();
+                        (item.Id == (ItemId) 2010) || (item.Id == (ItemId) 2041 && item.Charges > 0)).SpellSlot);
             }
             catch (Exception)
             {
