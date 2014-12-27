@@ -63,7 +63,7 @@ namespace YasuoSharpV2
                     Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalker"));
                     //TS
                     var TargetSelectorMenu = new Menu("Target Selector", "Target Selector");
-                    SimpleTs.AddToMenu(TargetSelectorMenu);
+                    TargetSelector.AddToMenu(TargetSelectorMenu);
                     Config.AddSubMenu(TargetSelectorMenu);
                     //Combo
                     Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
@@ -221,7 +221,7 @@ namespace YasuoSharpV2
                     //Remove the detected skillshots that have expired.
                     DetectedSkillshots.RemoveAll(skillshot => !skillshot.IsActive());
 
-                    Obj_AI_Hero target = SimpleTs.GetTarget((Yasuo.E.IsReady())?1500:475, SimpleTs.DamageType.Physical);
+                    Obj_AI_Hero target = TargetSelector.GetTarget((Yasuo.E.IsReady()) ? 1500 : 475, TargetSelector.DamageType.Physical);
                     if (Orbwalker.ActiveMode.ToString() == "Combo")
                     {
                         Yasuo.doCombo(target);
