@@ -110,6 +110,8 @@ namespace RivenSharp
             GameObject.OnDelete += OnDeleteObject;
             GameObject.OnPropertyChange += OnPropertyChange;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
+            Obj_AI_Base.OnNewPath += OnNewPath;
+            Obj_AI_Base.OnPlayAnimation += OnPlayAnimation;
 
             Game.OnGameSendPacket += OnGameSendPacket;
             Game.OnGameProcessPacket += OnGameProcessPacket;
@@ -120,6 +122,22 @@ namespace RivenSharp
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void OnPlayAnimation(GameObject sender, GameObjectPlayAnimationEventArgs args)
+        {
+            if (sender.IsMe && args.Animation.Contains("Spell") && isComboing())
+            {
+                Riven.cancelAnim();
+            }
+        }
+
+        private static void OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
+        {
+            if (sender.IsMe)
+            {
+                LXOrbwalker.ResetAutoAttackTimer();
             }
         }
 
@@ -247,7 +265,7 @@ namespace RivenSharp
             if (Config.Item("forceQE").GetValue<bool>() && sender.IsMe && arg.SData.Name.Contains("RivenFeint") && Riven.Q.IsReady() && LXOrbwalker.GetPossibleTarget() != null)
              {
                 Console.WriteLine("force q");
-                Riven.Q.Cast(LXOrbwalker.GetPossibleTarget());
+                Riven.Q.Cast(LXOrbwalker.GetPossibleTarget().Position);
                  Riven.forceQ = true;
                  // Riven.timer = new System.Threading.Timer(obj => { Riven.Player.IssueOrder(GameObjectOrder.MoveTo, Riven.difPos()); }, null, (long)100, System.Threading.Timeout.Infinite);
              }
@@ -258,72 +276,70 @@ namespace RivenSharp
            // Console.WriteLine("obj: " + obj.Name + " - " + prop.NewValue);
         }
 
-        public static void OnPlayAnimation(Obj_AI_Base value0, GameObjectPlayAnimationEventArgs value1)
-        {
-           // if (value1.Animation.Contains("Spell"))
-           // {
-           //     Console.WriteLine("Hydra");
-           //     Utility.DelayAction.Add(Game.Ping + 150, delegate { Riven.useHydra(Riven.orbwalker.GetTarget()); });
-           // }
-        }
 
+        public static int lastTargetId = 0;
 
         public static void OnGameProcessPacket(GamePacketEventArgs args)
         {
             try
             {
+                if (args.PacketData[0] == 35 && Riven.Q.IsReady())
+                {
+                    Console.WriteLine("Gott");
+                    GamePacket gp = new GamePacket(args.PacketData);
+                    gp.Position = 2;
+                    int netId = gp.ReadInteger();
+                    if (LXOrbwalker.GetPossibleTarget() == null || LXOrbwalker.GetPossibleTarget().NetworkId != netId)
+                        return;
+                    if(!LXOrbwalker.CanAttack())
+                        Riven.Q.Cast(LXOrbwalker.GetPossibleTarget().Position);
+                }
+
+                if (args.PacketData[0] == 0x17)
+                {
+                    Console.WriteLine("cancel");
+
+                    GamePacket packet = new GamePacket(args.PacketData);
+                    packet.Position = 2;
+                    int sourceId = packet.ReadInteger();
+                    if (sourceId == Riven.Player.NetworkId)
+                    {
+                        Console.WriteLine("cancel wawf");
+                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(Game.CursorPos.X, Game.CursorPos.Y)).Send();
+                        if (LXOrbwalker.GetPossibleTarget() != null)
+                        {
+                            Riven.moveTo(LXOrbwalker.GetPossibleTarget().Position);
+                            //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(LXOrbwalker.GetPossibleTarget().Position.X, LXOrbwalker.GetPossibleTarget().Position.Y)).Send();
+
+                            // LXOrbwalker.ResetAutoAttackTimer();
+                            Riven.cancelAnim(true);
+                        }
+                    }
+                }
+
+                if (args.PacketData[0] == 0xDF && false)
+                {
+                    
+                    Console.WriteLine("cancel");
+
+                    GamePacket packet = new GamePacket(args.PacketData);
+                    packet.Position = 2;
+                    int sourceId = packet.ReadInteger();
+                    if (sourceId == Riven.Player.NetworkId)
+                    {
+                        Console.WriteLine("cancel wawf");
+                        Riven.moveTo(Game.CursorPos);
+                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(Game.CursorPos.X, Game.CursorPos.Y)).Send();
+                        LXOrbwalker.ResetAutoAttackTimer();
+                        Riven.cancelAnim();
+                    }
+                }
+
                 if (isComboing())
                 {
-                    if (args.PacketData[0] == 0x65 && Riven.Q.IsReady())
-                    {
-
-                       // LogPacket(args);
-                        GamePacket gp = new GamePacket(args.PacketData);
-                        gp.Position = 1;
-                        Packet.S2C.Damage.Struct dmg = Packet.S2C.Damage.Decoded(args.PacketData);
-
-                        int targetID = gp.ReadInteger();
-                        int dType = (int)gp.ReadByte();
-                        int Unknown = gp.ReadShort();
-                        float DamageAmount = gp.ReadFloat();
-                        int TargetNetworkIdCopy = gp.ReadInteger();
-                        int SourceNetworkId = gp.ReadInteger();
-                        float dmga = (float)Riven.Player.GetAutoAttackDamage(ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(targetID));
-                        if (dmga - 10 > DamageAmount || dmga + 10 < DamageAmount)
-                            return;
-                        if (Riven.Player.NetworkId != dmg.SourceNetworkId && Riven.Player.NetworkId == targetID)
-                            return;
-                        Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
-                        if ((int)dmg.Type == 12 || (int)dmg.Type == 4 || (int)dmg.Type == 3 || (int)dmg.Type == 36 || (int)dmg.Type == 11)
-                        {
-                            Riven.Q.Cast(targ.Position);
-                        }
-                        else
-                        {
-                            Console.WriteLine("dtyoe: "+dType);
-                        }
-                    }
-                    if (args.PacketData[0] == 0x34)// from yol0 :)
-                    {
-                        GamePacket packet = new GamePacket(args.PacketData);
-                        packet.Position = 9;
-                        int action = packet.ReadByte();
-                        packet.Position = 1;
-                        int sourceId = packet.ReadInteger();
-                        if (action == 17 && sourceId == Riven.Player.NetworkId)
-                        {
-                            Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(Game.CursorPos.X, Game.CursorPos.Y)).Send();
-                            if (LXOrbwalker.GetPossibleTarget() != null)
-                            {
-                                Riven.moveTo(LXOrbwalker.GetPossibleTarget().Position);
-                                //Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(LXOrbwalker.GetPossibleTarget().Position.X, LXOrbwalker.GetPossibleTarget().Position.Y)).Send();
-
-                               // LXOrbwalker.ResetAutoAttackTimer();
-                                Riven.cancelAnim(true);
-                            }
-                        }
-                    }
-                    else if (args.PacketData[0] == 0x61) //move
+                   
+                   
+                    if (args.PacketData[0] == 0x61) //move
                     {
                         GamePacket packet = new GamePacket(args.PacketData);
                         packet.Position = 12;

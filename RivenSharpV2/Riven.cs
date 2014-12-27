@@ -165,7 +165,7 @@ namespace RivenSharp
 
         public static void gapWithQ(Obj_AI_Base target)
         {
-            if ((E.IsReady() || !Q.IsReady() || Player.IsAutoAttacking || !LXOrbwalker.CanAttack() || target.Distance(Player.ServerPosition) < Player.AttackRange) && !rushDownQ)
+            if ((E.IsReady() || !Q.IsReady() ) && ! rushDownQ)
                 return;
             reachWithQ(target);
         }
@@ -282,7 +282,7 @@ namespace RivenSharp
                 if (timeToReach > 2.5 || timeToReach < 0.0f || rushDown)
                 {
                     Vector2 to = Player.Position.To2D().Extend(target.Position.To2D(), 50);
-                    Player.IssueOrder(GameObjectOrder.MoveTo,to.To3D());
+                   // Player.IssueOrder(GameObjectOrder.MoveTo,to.To3D());
                     Q.Cast(target.ServerPosition);
                 }
             }

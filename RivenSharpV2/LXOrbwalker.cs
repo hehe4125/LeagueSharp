@@ -151,23 +151,31 @@ namespace Rive
 
         private static void OnUpdate(EventArgs args)
         {
-            CheckAutoWindUp();
-            if (CurrentMode == Mode.None || MyHero.IsChannelingImportantSpell() || MenuGUI.IsChatOpen)
-                return;
-            var target = GetPossibleTarget();
-            Orbwalk(Game.CursorPos, target);
+            try
+            {
+                CheckAutoWindUp();
+                if (CurrentMode == Mode.None || MyHero.IsChannelingImportantSpell() || MenuGUI.IsChatOpen)
+                    return;
+                var target = GetPossibleTarget();
+                Orbwalk(Game.CursorPos, target);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+           
         }
 
         public static void Orbwalk(Vector3 goalPosition, Obj_AI_Base target)
         {
-            if (target != null && CanAttack() && IsAllowedToAttack())
+            if (target.IsValidTarget() && CanAttack() && IsAllowedToAttack())
             {
                 _disableNextAttack = false;
                 FireBeforeAttack(target);
                 if (!_disableNextAttack)
                 {
-                    if (MyHero.IssueOrder(GameObjectOrder.AttackUnit, target))
-                        _lastAATick = Environment.TickCount + Game.Ping / 2;
+                   if (MyHero.IssueOrder(GameObjectOrder.AttackUnit, target))
+                       _lastAATick = Environment.TickCount + Game.Ping / 2;
                 }
             }
             if (!CanMove() || !IsAllowedToMove())
