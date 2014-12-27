@@ -38,11 +38,11 @@ namespace MasterSharp
         }
         public static void setupSmite()
         {
-            if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
+            if (player.Spellbook.GetSpell(SpellSlot.Summoner1).SData.Name.ToLower().Contains("smite"))
             {
                 smite = SpellSlot.Summoner1;
             }
-            else if (player.SummonerSpellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
+            else if (player.Spellbook.GetSpell(SpellSlot.Summoner2).SData.Name.ToLower().Contains("smite"))
             {
                 smite = SpellSlot.Summoner2;
             }
@@ -139,12 +139,12 @@ namespace MasterSharp
 
         public static void useSmiteOnTarget(Obj_AI_Base target)
         {
-            if (smite != SpellSlot.Unknown && player.SummonerSpellbook.CanUseSpell(smite) == SpellState.Ready)
+            if (smite != SpellSlot.Unknown && player.Spellbook.CanUseSpell(smite) == SpellState.Ready)
             {
                 if (target.Distance(player,true)<=700*700 &&(yiGotItemRange(3714, 3718) || yiGotItemRange(3706, 3710)))
                 {
                
-                    player.SummonerSpellbook.CastSpell(smite, target);
+                    player.Spellbook.CastSpell(smite, target);
                 }
             }
         }

@@ -33,7 +33,7 @@ namespace MasterSharp
         public SummonerItems(Obj_AI_Hero myHero)
         {
             player = myHero;
-            sumBook = player.SummonerSpellbook;
+            sumBook = player.Spellbook;
             ignite = player.GetSpellSlot("summonerdot");
             smite = player.GetSpellSlot("SummonerSmite");
         }
@@ -61,7 +61,7 @@ namespace MasterSharp
         {
             var itemId = (int)item;
             if (Items.CanUseItem(itemId))
-                getInvSlot(itemId).UseItem(target);
+                player.Spellbook.CastSpell(getInvSlot(itemId).SpellSlot, target);
 
         }
 

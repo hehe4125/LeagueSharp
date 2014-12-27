@@ -65,7 +65,7 @@ namespace MasterSharp
 
                 //TS
                 Menu targetSelectorMenu = new Menu("Target Selector", "Target Selector");
-                SimpleTs.AddToMenu(targetSelectorMenu);
+                TargetSelector.AddToMenu(targetSelectorMenu);
                 Config.AddSubMenu(targetSelectorMenu);
                 //Combo
                 Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
@@ -270,7 +270,7 @@ namespace MasterSharp
             }
             if (LXOrbwalker.CurrentMode == LXOrbwalker.Mode.Combo)
             {
-                Obj_AI_Hero target = SimpleTs.GetTarget(800, SimpleTs.DamageType.Physical);
+                Obj_AI_Hero target = TargetSelector.GetTarget(800, TargetSelector.DamageType.Physical);
                 LXOrbwalker.ForcedTarget = target;
                 if(target != null)
                     MasterYi.selectedTarget = target;
