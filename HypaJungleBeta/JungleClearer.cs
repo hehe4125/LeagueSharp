@@ -23,7 +23,7 @@ namespace HypaJungle
             ThinkAfterFinishCamp
         }
 
-        public static List<String> supportedChamps = new List<string> { "MasterYi", "Warwick", "Twitch", "Aatrox" }; 
+        public static List<String> supportedChamps = new List<string> { "MasterYi", "Warwick", "Twitch", "Aatrox", "Jinx" }; 
 
 
         public static Obj_AI_Hero player = ObjectManager.Player;
@@ -60,6 +60,10 @@ namespace HypaJungle
                 case ("aatrox"):
                     jungler = new Aatrox();
                     Game.PrintChat("Aatrox loaded");
+                    break;
+                case ("jinx"):
+                    jungler = new Jinx();
+                    Game.PrintChat("Jinx loaded");
                     break;
                 /*case "udyr":
                     jungler = new Udyr();

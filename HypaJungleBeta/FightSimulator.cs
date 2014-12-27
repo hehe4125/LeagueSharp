@@ -153,7 +153,7 @@ namespace HypaJungle
 
         public float getSmiteCd(float inTime =0)
         {
-            float cd = Jungler.player.SummonerSpellbook.GetSpell(JungleClearer.jungler.smite).CooldownExpires - Game.Time - inTime;
+            float cd = Jungler.player.Spellbook.GetSpell(JungleClearer.jungler.smite).CooldownExpires - Game.Time - inTime;
             return (cd < 0) ? 0 : cd;
         }
     }

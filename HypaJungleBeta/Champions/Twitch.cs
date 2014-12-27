@@ -11,6 +11,9 @@ namespace HypaJungle
 {
     class Twitch : Jungler
     {
+
+        public bool usingsafe = false;
+
         public Twitch()
         {
             setUpSpells();
@@ -175,6 +178,14 @@ namespace HypaJungle
 
         }
 
+        public void shouldUseSafe()
+        {
+            if (!usingsafe  && player.Health / player.MaxHealth < 0.5f && JungleClearer.focusedCamp.useSafe)
+                usingsafe = true;
+            else  if (usingsafe  && player.Health / player.MaxHealth > 0.7f && JungleClearer.focusedCamp.useSafe)
+                usingsafe = false;
+        }
+
         public override void attackMinion(Obj_AI_Minion minion, bool onlyAA)
         {
             if (JungleOrbwalker.CanAttack())
@@ -183,6 +194,8 @@ namespace HypaJungle
                 UseE(minion);
                 UseR(minion);
             }
+           // shouldUseSafe();
+
             if (JungleClearer.focusedCamp.useSafe)
                 JungleOrbwalker.attackMinion(minion, JungleClearer.focusedCamp.safePosition);
             else
