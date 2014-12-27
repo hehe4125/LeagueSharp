@@ -25,7 +25,7 @@ namespace KhazixSharp
         public static SpellDataInst Rdata = sBook.GetSpell(SpellSlot.R);
         public static Spell Q = new Spell(SpellSlot.Q, 325);
         public static Spell W = new Spell(SpellSlot.W, 1000);
-        public static Spell E = new Spell(SpellSlot.E, 600);
+        public static Spell E = new Spell(SpellSlot.E, 700);
         public static Spell R = new Spell(SpellSlot.R, 0);
 
 
@@ -80,12 +80,22 @@ namespace KhazixSharp
                 doQ(target);
                 Orbwalking.Attack = true;
                 doSmartW(target);
-                if (target.Health < fullComboDmgOn(target) * 1.2f || isStealthed())
+                if (target.Health < fullComboDmgOn(target) * 1.3f || isStealthed())
                     doSmartE(target, true);
                 else
                     reachWithE(target);
             }
             doSmartR(target);
+        }
+
+        public static void doHarass(Obj_AI_Base target)
+        {
+            if (target == null || !target.IsValidTarget())
+                return;
+
+                useHydra(target);
+                doQ(target);
+                doSmartW(target);
         }
 
         public static void doQ(Obj_AI_Base target)
@@ -160,7 +170,7 @@ namespace KhazixSharp
                 return;
             var dist = Player.Distance(target);
             if (enemiesNear() > 2 || !gotPassiveDmg() || (timeToReachAA(target) > 1f && targIsKillabe(target)))
-                if (targIsReach(target) < 200 && (!Q.IsReady() || E.IsReady()) && (dist> Q.Range || !Q.IsReady()))
+                if (Player.Distance(target) < 375 && (!Q.IsReady() || E.IsReady()) && (dist> Q.Range || !Q.IsReady()))
                 {
                     R.Cast();
                 }
@@ -190,30 +200,21 @@ namespace KhazixSharp
         {
             float dmg = 0f;
             if (gotPassiveDmg())
-                dmg += (float)Player.CalcDamage(target, Damage.DamageType.Physical, 10 + 10 * Player.Level + 0.5 * Player.FlatMagicDamageMod);
-
-            dmg += (float)Player.GetAutoAttackDamage(target);
+                dmg +=
+                    (float)
+                        Player.CalcDamage(target, Damage.DamageType.Magical,
+                            10 + 10*Player.Level + 0.5*Player.FlatMagicDamageMod); //DamageLib.CalcMagicDmg(10 + 10* Player.Level + 0.5*Player.FlatMagicDamageMod,target);
             if (Q.IsReady())
             {
                 if (targetIsIsolated(target))
-                {
-                    if (Qdata.Name == "khazixqlong")
-                        dmg += (float)Player.GetSpellDamage(target, SpellSlot.Q, 3);
-                    else
-                        dmg += (float)Player.GetSpellDamage(target, SpellSlot.Q, 1);
-                }
+                    dmg += Q.GetDamage(target, 1);// DamageLib.getDmg(target, DamageLib.SpellType.Q, DamageLib.StageType.FirstDamage);
                 else
-                {
-                    if (Qdata.Name == "khazixqlong")
-                        dmg += (float)Player.GetSpellDamage(target, SpellSlot.Q, 2);
-                    else
-                        dmg += (float)Player.GetSpellDamage(target, SpellSlot.Q);
-                }
+                    dmg += Q.GetDamage(target);
             }
             if (W.IsReady())
-                dmg += (float)Player.GetSpellDamage(target, SpellSlot.W);
+                dmg += W.GetDamage(target);
             if(E.IsReady())
-                dmg += (float)Player.GetSpellDamage(target, SpellSlot.E);
+                dmg += E.GetDamage(target);
 
 
             return dmg;

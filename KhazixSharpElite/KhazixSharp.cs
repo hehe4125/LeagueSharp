@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 using LeagueSharp;
 using LeagueSharp.Common;
 using System.Drawing;
-using System.Net;
+
 /*
  * ToDo:
  * 
- * Hydra
+ * Hydra <-- done
  * 
- * overkill
+ * overkill <--done
  * 
+ * 
+ * tower dives
+ * 
+ * 
+ * ult only close
  * 
  * */
 
@@ -43,8 +48,7 @@ namespace KhazixSharp
             Game.PrintChat("Khazix - Sharp by DeTuKs");
 
             try
-            {	
-				     
+            {
 
                 Config = new Menu("KhazixSharp", "Khazix", true);
                 //Orbwalker
@@ -66,7 +70,8 @@ namespace KhazixSharp
                
                 //Harass
                 Config.AddSubMenu(new Menu("Harass Sharp", "harass"));
-               
+                Config.SubMenu("harass").AddItem(new MenuItem("harassBtn", "Harass Target")).SetValue(new KeyBind('A', KeyBindType.Press, false));
+
                 //Extra
                 Config.AddSubMenu(new Menu("Extra Sharp", "extra"));
                 
@@ -84,7 +89,6 @@ namespace KhazixSharp
                 GameObject.OnDelete += OnDeleteObject;
                 GameObject.OnPropertyChange += OnPropertyChange;
                 Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
-                Obj_AI_Base.OnPlayAnimation += OnPlayAnimation;
 
                 Game.OnGameSendPacket += OnGameSendPacket;
                 Game.OnGameProcessPacket += OnGameProcessPacket;
@@ -103,16 +107,25 @@ namespace KhazixSharp
             try
             {
 
-            if (Khazix.orbwalker.ActiveMode.ToString() == "Combo")
-            {
-                Obj_AI_Hero target = SimpleTs.GetTarget(Khazix.getBestRange(), SimpleTs.DamageType.Physical);
+                if (Khazix.orbwalker.ActiveMode.ToString() == "Combo")
+                {
+                    Obj_AI_Hero target = SimpleTs.GetTarget(Khazix.getBestRange(), SimpleTs.DamageType.Physical);
 
-                Khazix.checkUpdatedSpells();
+                    Khazix.checkUpdatedSpells();
 
 
-                Khazix.doCombo(target);
-                //Console.WriteLine(target.NetworkId);
-            }
+                    Khazix.doCombo(target);
+                    //Console.WriteLine(target.NetworkId);
+                }
+                if (Config.Item("harassBtn").GetValue<KeyBind>().Active)
+                {
+                    Obj_AI_Hero target = SimpleTs.GetTarget(Khazix.getBestRange(), SimpleTs.DamageType.Physical);
+
+
+                    Khazix.doHarass(target);
+                }
+
+
 
             }
             catch (Exception ex)
@@ -132,6 +145,9 @@ namespace KhazixSharp
                 hpi.unit = enemy;
                 hpi.drawDmg(Khazix.fullComboDmgOn(enemy), Color.Yellow);
             }
+            Drawing.DrawCircle(Khazix.Player.Position, Khazix.Q.Range, Color.Pink);
+            Drawing.DrawCircle(Khazix.Player.Position, Khazix.W.Range, Color.Pink);
+            Drawing.DrawCircle(Khazix.Player.Position, Khazix.E.Range, Color.Pink);
         }
 
         private static void OnCreateObject(GameObject sender, EventArgs args)
@@ -157,10 +173,6 @@ namespace KhazixSharp
 
         }
 
-        public static void OnPlayAnimation(LeagueSharp.GameObject value0, GameObjectPlayAnimationEventArgs value1)
-        {
-            
-        }
 
 
         public static void OnGameProcessPacket(GamePacketEventArgs args)

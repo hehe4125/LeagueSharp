@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-using System.Net;
+
 using LeagueSharp;
 using LeagueSharp.Common;
 /*TODO
@@ -71,7 +71,6 @@ namespace RivenSharp
             {
                 if (Riven.Player.ChampionName != "Riven") return;
 
-			        
             Game.PrintChat("RivenSharp by DeTuKs");
             Config = new Menu("Riven - Sharp", "Riven", true);
             //Orbwalkervar menu = new Menu("My Mainmenu", "my_mainmenu", true);
@@ -277,11 +276,11 @@ namespace RivenSharp
                 {
                     if (args.PacketData[0] == 0x65 && Riven.Q.IsReady())
                     {
-                        Packet.S2C.Damage.Struct dmg = Packet.S2C.Damage.Decoded(args.PacketData);
 
                        // LogPacket(args);
                         GamePacket gp = new GamePacket(args.PacketData);
                         gp.Position = 1;
+                        Packet.S2C.Damage.Struct dmg = Packet.S2C.Damage.Decoded(args.PacketData);
 
                         int targetID = gp.ReadInteger();
                         int dType = (int)gp.ReadByte();
@@ -289,7 +288,10 @@ namespace RivenSharp
                         float DamageAmount = gp.ReadFloat();
                         int TargetNetworkIdCopy = gp.ReadInteger();
                         int SourceNetworkId = gp.ReadInteger();
-                        if (Riven.Player.NetworkId != dmg.SourceNetworkId)
+                        float dmga = (float)Riven.Player.GetAutoAttackDamage(ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(targetID));
+                        if (dmga - 10 > DamageAmount || dmga + 10 < DamageAmount)
+                            return;
+                        if (Riven.Player.NetworkId != dmg.SourceNetworkId && Riven.Player.NetworkId == targetID)
                             return;
                         Obj_AI_Base targ = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(dmg.TargetNetworkId);
                         if ((int)dmg.Type == 12 || (int)dmg.Type == 4 || (int)dmg.Type == 3 || (int)dmg.Type == 36 || (int)dmg.Type == 11)

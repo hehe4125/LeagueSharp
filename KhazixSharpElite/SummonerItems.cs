@@ -25,14 +25,16 @@ namespace KhazixSharp
             SwordOD = 3131,
             Ghostblade = 3142,
             BotRK = 3153,
-            Cutlass = 3144
+            Cutlass = 3144,
+
+            Omen = 3143
         }
 
         public SummonerItems(Obj_AI_Hero myHero)
         {
             player = myHero;
-            sumBook = player.SummonerSpellbook;
-            ignite = player.GetSpellSlot("SummonerFlash");
+            sumBook = player.Spellbook;
+            ignite = player.GetSpellSlot("summonerdot");
             smite = player.GetSpellSlot("SummonerSmite");
         }
 
@@ -59,7 +61,7 @@ namespace KhazixSharp
         {
             var itemId = (int)item;
             if (Items.CanUseItem(itemId))
-                getInvSlot(itemId).UseItem(target);
+                player.Spellbook.CastSpell(getInvSlot(itemId).SpellSlot, target);
 
         }
 

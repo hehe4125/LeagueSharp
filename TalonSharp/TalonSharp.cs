@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net;
+
 using LeagueSharp;
 using LeagueSharp.Common;
 using System.Drawing;
@@ -42,15 +42,14 @@ namespace TalonSharp
 
             try
             {
-			
-				
+
                 Config = new Menu("Talon - Sharp", "Talon", true);
                 //Orbwalker
                 Config.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));
                 Talon.orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalker"));
                 //TS
                 var TargetSelectorMenu = new Menu("Target Selector", "Target Selector");
-                SimpleTs.AddToMenu(TargetSelectorMenu);
+                TargetSelector.AddToMenu(TargetSelectorMenu);
                 Config.AddSubMenu(TargetSelectorMenu);
                 //Combo
                 Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
@@ -85,7 +84,6 @@ namespace TalonSharp
                 GameObject.OnCreate += OnCreateObject;
                 GameObject.OnDelete += OnDeleteObject;
                 Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
-                Orbwalking.OnAttack += AfterAttack;
                 Game.OnGameProcessPacket += OnGameProcessPacket;
                 Talon.setSkillshots();
 
@@ -99,17 +97,6 @@ namespace TalonSharp
 
 
 
-        private static void AfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
-        {
-            //Console.WriteLine("AfterAA Q");
-            if (unit.IsMe && target is Obj_AI_Hero & target.IsEnemy)
-            {
-              //  Console.WriteLine("Cast Q");
-             //   Talon.Q.Cast();
-               // Orbwalking.ResetAutoAttackTimer();
-            }
-        }
-
         private static void OnGameUpdate(EventArgs args)
         {
 
@@ -122,7 +109,7 @@ namespace TalonSharp
                 useQ = false;
             }
 
-            Obj_AI_Hero target = SimpleTs.GetTarget(750, SimpleTs.DamageType.Physical);
+            Obj_AI_Hero target = TargetSelector.GetTarget(750, TargetSelector.DamageType.Physical);
             if (Talon.orbwalker.ActiveMode.ToString() == "Combo")
             {
                 Talon.doCombo(target);   
