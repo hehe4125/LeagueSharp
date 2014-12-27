@@ -199,7 +199,7 @@ namespace JayceSharpV2
                 Obj_AI_Base tower = ObjectManager.Get<Obj_AI_Turret>().Where(tur => tur.IsAlly && tur.Health > 0).OrderBy(tur => Player.Distance(tur)).First();
                 if (Player.Distance(getBestPosToHammer(target.ServerPosition)) < 400 && tower.Distance(target)<1500)
                 {
-                    Player.SummonerSpellbook.CastSpell(Player.GetSpellSlot("SummonerFlash"), getBestPosToHammer(target.ServerPosition));
+                    Player.Spellbook.CastSpell(Player.GetSpellSlot("SummonerFlash"), getBestPosToHammer(target.ServerPosition));
                 }
                 Player.IssueOrder(GameObjectOrder.AttackUnit, target);
             }

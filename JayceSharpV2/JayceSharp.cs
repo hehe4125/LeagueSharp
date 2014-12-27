@@ -58,7 +58,7 @@ namespace JayceSharpV2
                 Jayce.orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalker"));
                 //TS
                 Menu targetSelectorMenu = new Menu("Target Selector", "Target Selector");
-                SimpleTs.AddToMenu(targetSelectorMenu);
+                TargetSelector.AddToMenu(targetSelectorMenu);
                 Config.AddSubMenu(targetSelectorMenu);
                 //Combo
                 Config.AddSubMenu(new Menu("Combo Sharp", "combo"));
@@ -139,6 +139,7 @@ namespace JayceSharpV2
                 Jayce.shootQE(Game.CursorPos);
             }
 
+
             if (!Jayce.E1.IsReady())
                 Jayce.castQon = new Vector3(0, 0, 0);
 
@@ -148,7 +149,7 @@ namespace JayceSharpV2
             if (Config.Item("fullDMG").GetValue<KeyBind>().Active)//fullDMG
             {
                 Jayce.activateMura();
-                Obj_AI_Hero target = SimpleTs.GetTarget(Jayce.getBestRange(), SimpleTs.DamageType.Physical);
+                Obj_AI_Hero target = TargetSelector.GetTarget(Jayce.getBestRange(), TargetSelector.DamageType.Physical);
                 if (Jayce.lockedTarg == null)
                     Jayce.lockedTarg = target;
                 Jayce.doFullDmg(Jayce.lockedTarg);
@@ -161,7 +162,7 @@ namespace JayceSharpV2
             if (Config.Item("injTarget").GetValue<KeyBind>().Active)//fullDMG
             {
                 Jayce.activateMura();
-                Obj_AI_Hero target = SimpleTs.GetTarget(Jayce.getBestRange(), SimpleTs.DamageType.Physical);
+                Obj_AI_Hero target = TargetSelector.GetTarget(Jayce.getBestRange(), TargetSelector.DamageType.Physical);
                 if (Jayce.lockedTarg == null)
                     Jayce.lockedTarg = target;
                 Jayce.doJayceInj(Jayce.lockedTarg);
@@ -177,7 +178,7 @@ namespace JayceSharpV2
             if (Jayce.orbwalker.ActiveMode.ToString() == "Combo")
             {
                 Jayce.activateMura();
-                Obj_AI_Hero target = SimpleTs.GetTarget(Jayce.getBestRange(), SimpleTs.DamageType.Physical);
+                Obj_AI_Hero target = TargetSelector.GetTarget(Jayce.getBestRange(), TargetSelector.DamageType.Physical);
                 Jayce.doCombo(target);
             }
 
